@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-INGRESS_IP=127.0.0.1
+INGRESS_IP=127_0_0_1
 
 set -eox pipefail
 
 get_domain_name() {
-  echo "$NAME.$INGRESS_IP.rt.trillo.io"
+  echo "$NAME.$INGRESS_IP.trillo.io"
 }
 
 #create self-signed cert
@@ -62,22 +62,35 @@ handle_failure() {
 }
 trap "handle_failure" EXIT
 
-/bin/expand_config.py
-NAME="$(/bin/print_config.py --param '{"x-google-marketplace": {"type": "NAME"}}')"
-NAMESPACE="$(/bin/print_config.py --param '{"x-google-marketplace": {"type": "NAMESPACE"}}')"
+NAME="$(/bin/print_config.py \
+    --xtype NAME \
+    --values_mode raw)"
+NAMESPACE="$(/bin/print_config.py \
+    --xtype NAMESPACE \
+    --values_mode raw)"
 export NAME
 export NAMESPACE
 
 echo "Deploying application \"$NAME\""
 
-app_uid=$(kubectl get "applications/$NAME" \
+app_uid=$(kubectl get "applications.app.k8s.io/$NAME" \
   --namespace="$NAMESPACE" \
   --output=jsonpath='{.metadata.uid}')
-app_api_version=$(kubectl get "applications/$NAME" \
+app_api_version=$(kubectl get "applications.app.k8s.io/$NAME" \
   --namespace="$NAMESPACE" \
   --output=jsonpath='{.apiVersion}')
 
+/bin/expand_config.py --values_mode raw --app_uid "$app_uid"
+
 create_manifests.sh
+
+# Assign owner references for the resources.
+/bin/set_ownership.py \
+  --app_name "$NAME" \
+  --app_uid "$app_uid" \
+  --app_api_version "$app_api_version" \
+  --manifests "/data/manifest-expanded" \
+  --dest "/data/manifest-expanded/deploy-rt.yaml"
 
 # Ensure assembly phase is "Pending", until successful kubectl apply.
 /bin/setassemblyphase.py \

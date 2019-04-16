@@ -28,6 +28,7 @@ COPY deployer/deploy_with_tests.sh /bin/
 COPY schema.yaml /data/
 COPY server.config /data/
 COPY manifest /data/manifest
+RUN mkdir -p /data/final_values
 
 
 ENTRYPOINT ["/bin/bash", "/bin/deploy.sh"]
