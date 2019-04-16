@@ -41,11 +41,14 @@ docker push gcr.io/<path>/deployer:<tag>
 
 ## Create Your Cluster
 
-See [Getting Started](https://github.com/GoogleCloudPlatform/marketplace-k8s-app-tools/blob/master/README.md#getting-started) to create your cluster. Trillo Plaform requires a minimum 3 node cluster with each node having a minimum of 2 vCPU and k8s version 1.8.
+See
+[Getting Started](https://github.com/GoogleCloudPlatform/marketplace-k8s-app-tools/blob/master/README.md#getting-started)
+to create your cluster. Trillo Platform requires a minimum 3 node
+cluster with each node having a minimum of 2 vCPU and k8s version 1.8.
 
 Then:
 
-```shell
+```shell    
 gcloud container clusters get-credentials <cluster> 
 ```
 
