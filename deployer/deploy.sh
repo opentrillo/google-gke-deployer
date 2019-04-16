@@ -85,9 +85,9 @@ app_api_version=$(kubectl get "applications.app.k8s.io/$NAME" \
 create_manifests.sh
 
 # Ensure assembly phase is "Pending", until successful kubectl apply.
-/bin/setassemblyphase.py \
-  --manifest "/data/manifest-expanded/deploy-rt.yaml" \
-  --status "Pending"
+#/bin/setassemblyphase.py \
+#  --manifest "/data/manifest-expanded/deploy-rt.yaml" \
+#  --status "Pending"
 
 ###install trillo ###
 kubectl apply -f "/data/manifest-expanded/secrets-mysql.yaml"
