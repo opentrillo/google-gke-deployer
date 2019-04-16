@@ -101,7 +101,7 @@ kubectl apply -f "/data/manifest-expanded/deploy-rt.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-service-account.yaml"
 
 #generate a self-signed cert
-create_cert
+#create_cert
 
 sleep 20
 
