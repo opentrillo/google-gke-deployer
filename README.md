@@ -82,25 +82,15 @@ kubectl get pods --namespace=<namespace>
 ```
 
 ### Setup Wizard
-Get the Trillo Platform Operations Center URL:
+Get the Trillo Platform Runtime URL:
 
 ```shell
-kubectl get ing -n <namespace> | grep cjoc
+kubectl get ing -n <namespace> | grep trillo-rt
 
-ex. kubectl get ing -n deployer-test | grep cjoc
+ex. kubectl get ing -n deployer-test | grep trillo-rt
 ```
 Paste the domain name listed into your browser to go to the Trillo Platform Operations Center and start the setup process. Or you can click on the cjoc Endpoints link under Kubernetes Engine > Services in the GCP console.
 
-The installation process requires an intial admin password. Execute this command to get it:
-
-```shell
-kubectl exec <app name>-cjoc-0 -n <namespace> -- cat /var/jenkins_home/secrets/initialAdminPassword
-
-ex. kubectl exec cloudbees-core-1-cjoc-0 -n deployer-test -- cat /var/jenkins_home/secrets/initialAdminPassword
-```
-You can use the Connect button at Kubernetes Engine > Clusters to launch Cloud Shell to issue this command.
-
-Follow the steps in the setup wizard to complete the installation.
 
 ## Using Trillo Platform
 
