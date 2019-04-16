@@ -22,7 +22,7 @@ include ./marketplace-tools/var.Makefile
 include ./marketplace-tools/app.Makefile
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/trillo-k8s-public/deployer:$(TAG)
-NAME ?= trillo-runtime
+NAME ?= trillo-cluster-1
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
