@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trillo-rt
+  namespace: $namespace
+  labels:
+    app: trillo-rt
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: trillo-rt
+      namespace: $namespace
+      labels:
+        app: trillo-rt
+    spec:
+      serviceAccountName: trillo-rt
+      containers:
+        - name: trillo-rt
+          image: $trilloRTImage
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATA_SERVICE_URL
+              value: https://trillo-ds
+            - name: CONTAINER_ORCHESTRATOR
+              value: GKE
+          ports:
+            - containerPort: 8020
+              name: trillo-rt
+          volumeMounts:
+            - name: trillo-repo
+              mountPath: /trillo-repo
+            - name: trillo-rt-appdata
+              mountPath: /trillo-rt-appdata
+          livenessProbe:
+            initialDelaySeconds: 180
+            httpGet:
+              scheme: HTTPS
+              port: 8020
+              path: /_healthcheck
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: trillo-dockerhub-secret
+      volumes:
+      - name: trillo-repo
+        persistentVolumeClaim:
+          claimName: trillo-repo-pvc
+      - name: trillo-rt-appdata
+        persistentVolumeClaim:
+          claimName: trillo-rt-appdata-pvc
+  selector:
+    matchLabels:
+      app: trillo-rt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trillo-rt
+  namespace: $namespace
+spec:
+  selector:
+    app: trillo-rt
+  ports:
+    - name: https
+      port: 443
+      targetPort: 8020
+      protocol: TCP
+  type: LoadBalancer # Internet facing ELB

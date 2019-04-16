@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trillo-ds
+  namespace: $namespace
+  labels:
+    app: trillo-ds
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: trillo-ds
+      namespace: $namespace
+      labels:
+        app: trillo-ds
+    spec:
+      containers:
+        - name: trillo-ds
+          image: $trilloDSImage
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DEFAULT_DATA_SERVER_TYPE
+              value: mysql
+            - name: DEFAULT_DATA_SERVER_HOST
+              value: mysql
+            - name: DEFAULT_DATA_SERVER_PORT
+              value: '3306'
+            - name: DEFAULT_DATA_SERVER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql
+                  key: username
+            - name: DEFAULT_DATA_SERVER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql
+                  key: password
+          ports:
+            - containerPort: 8030
+              name: trillo-ds
+          volumeMounts:
+            - name: trillo-repo
+              mountPath: /trillo-repo
+          livenessProbe:
+            initialDelaySeconds: 180
+            httpGet:
+              scheme: HTTPS
+              port: 8030
+              path: /_healthcheck
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: trillo-dockerhub-secret
+      volumes:
+        - name: trillo-repo
+          persistentVolumeClaim:
+            claimName: trillo-repo-pvc
+  selector:
+    matchLabels:
+      app: trillo-ds
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trillo-ds
+  namespace: $namespace
+spec:
+  selector:
+    app: trillo-ds
+  ports:
+    - name: https
+      port: 443
+      targetPort: 8030
+      protocol: TCP
+  type: ClusterIP # Internal
