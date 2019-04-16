@@ -84,14 +84,6 @@ app_api_version=$(kubectl get "applications.app.k8s.io/$NAME" \
 
 create_manifests.sh
 
-# Assign owner references for the resources.
-/bin/set_ownership.py \
-  --app_name "$NAME" \
-  --app_uid "$app_uid" \
-  --app_api_version "$app_api_version" \
-  --manifests "/data/manifest-expanded" \
-  --dest "/data/manifest-expanded/deploy-rt.yaml"
-
 # Ensure assembly phase is "Pending", until successful kubectl apply.
 /bin/setassemblyphase.py \
   --manifest "/data/manifest-expanded/deploy-rt.yaml" \
