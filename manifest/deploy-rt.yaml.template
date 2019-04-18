@@ -21,7 +21,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: DATA_SERVICE_URL
-              value: https://trillo-ds
+              value: https://trillo-ds.$namespace.svc.cluster.local
             - name: CONTAINER_ORCHESTRATOR
               value: GKE
           ports:
@@ -39,8 +39,6 @@ spec:
               port: 8020
               path: /_healthcheck
       restartPolicy: Always
-      imagePullSecrets:
-        - name: trillo-dockerhub-secret
       volumes:
       - name: trillo-repo
         persistentVolumeClaim:

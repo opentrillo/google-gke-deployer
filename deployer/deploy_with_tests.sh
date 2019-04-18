@@ -14,31 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-INGRESS_IP=127_0_0_1
-
 set -eox pipefail
 
 get_domain_name() {
-  echo "$NAME.$INGRESS_IP.trillo.io"
-}
-
-#create self-signed cert
-create_cert(){
-  local source=/data/server.config
-  local config_file; config_file=$(mktemp)
-  cp $source $config_file
-
-  sed -i -e "s#trillo.io#$(get_domain_name)#" "$config_file"
-
-  openssl req -config "$config_file" -new -newkey rsa:2048 -nodes -keyout server.key -out server.csr
-
-  echo "Created server.key"
-  echo "Created server.csr"
-
-  openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
-  echo "Created server.crt (self-signed)"
-
-  kubectl create secret tls $NAME-tls --cert=server.crt --key=server.key
+  kubectl describe services | grep "Endpoints:" | awk '{sub(/([^ ]+ +){1}/,"")}1'
 }
 
 # This is the entry point for the production deployment
@@ -84,12 +63,7 @@ app_api_version=$(kubectl get "applications.app.k8s.io/$NAME" \
 
 create_manifests.sh
 
-# Ensure assembly phase is "Pending", until successful kubectl apply.
-#/bin/setassemblyphase.py \
-#  --manifest "/data/manifest-expanded/deploy-rt.yaml" \
-#  --status "Pending"
-
-###install trillo ###
+###Install Trillo ###
 kubectl apply -f "/data/manifest-expanded/secrets-mysql.yaml"
 kubectl apply -f "/data/manifest-expanded/pvpvc-stage1.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-nfs.yaml"
@@ -100,10 +74,7 @@ kubectl apply -f "/data/manifest-expanded/deploy-redis.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-rt.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-service-account.yaml"
 
-#generate a self-signed cert
-#create_cert
-
-sleep 20
+sleep 30
 
 patch_assembly_phase.sh --status="Success"
 

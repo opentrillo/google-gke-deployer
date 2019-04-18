@@ -9,7 +9,7 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: repo-nfs.trillo.svc.cluster.local
+    server: repo-nfs.$namespace.svc.cluster.local
     path: "/"
   claimRef:
     namespace: $namespace
@@ -39,7 +39,7 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: appdata-nfs.trillo.svc.cluster.local
+    server: appdata-nfs.$namespace.svc.cluster.local
     path: "/"
   claimRef:
     name: trillo-rt-appdata-pvc

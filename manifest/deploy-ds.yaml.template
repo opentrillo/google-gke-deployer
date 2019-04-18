@@ -22,7 +22,7 @@ spec:
             - name: DEFAULT_DATA_SERVER_TYPE
               value: mysql
             - name: DEFAULT_DATA_SERVER_HOST
-              value: mysql
+              value: mysql.$namespace.svc.cluster.local
             - name: DEFAULT_DATA_SERVER_PORT
               value: '3306'
             - name: DEFAULT_DATA_SERVER_USERNAME
@@ -48,8 +48,6 @@ spec:
               port: 8030
               path: /_healthcheck
       restartPolicy: Always
-      imagePullSecrets:
-        - name: trillo-dockerhub-secret
       volumes:
         - name: trillo-repo
           persistentVolumeClaim:
