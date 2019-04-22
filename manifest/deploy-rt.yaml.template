@@ -24,6 +24,8 @@ spec:
               value: https://trillo-ds.$namespace.svc.cluster.local
             - name: CONTAINER_ORCHESTRATOR
               value: GKE
+            - name: REDIS_CREDENTIALS
+              value: $redisCachePassword
           ports:
             - containerPort: 8020
               name: trillo-rt

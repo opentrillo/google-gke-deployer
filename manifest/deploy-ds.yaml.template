@@ -26,15 +26,9 @@ spec:
             - name: DEFAULT_DATA_SERVER_PORT
               value: '3306'
             - name: DEFAULT_DATA_SERVER_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: mysql
-                  key: username
+              value: root
             - name: DEFAULT_DATA_SERVER_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql
-                  key: password
+              value: $mysqlDBPassword
           ports:
             - containerPort: 8030
               name: trillo-ds

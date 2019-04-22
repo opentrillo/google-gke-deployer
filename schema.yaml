@@ -20,8 +20,19 @@ properties:
     default: gcr.io/trillo-k8s-public/trillo-rt:1
     x-google-marketplace:
       type: IMAGE
+  mysqlDBPassword:
+    type: string
+    title: MySQL Password
+    description: MySQL password for the root account.
+  redisCachePassword:
+    type: string
+    title: Redis Password
+    description: Redis cache server password.
+
 required:
 - name
 - namespace
 - trilloDSImage
 - trilloRTImage
+- mysqlDBPassword
+- redisCachePassword

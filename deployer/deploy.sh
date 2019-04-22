@@ -16,9 +16,7 @@
 
 set -eox pipefail
 
-get_domain_name() {
-  kubectl describe services | grep "Endpoints:" | awk '{sub(/([^ ]+ +){1}/,"")}1'
-}
+INGRESS_IP=127.0.0.1
 
 # This is the entry point for the production deployment
 
@@ -64,7 +62,6 @@ app_api_version=$(kubectl get "applications.app.k8s.io/$NAME" \
 create_manifests.sh
 
 ###Install Trillo ###
-kubectl apply -f "/data/manifest-expanded/secrets-mysql.yaml"
 kubectl apply -f "/data/manifest-expanded/pvpvc-stage1.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-nfs.yaml"
 kubectl apply -f "/data/manifest-expanded/pvpvc-stage2.yaml"
@@ -74,12 +71,17 @@ kubectl apply -f "/data/manifest-expanded/deploy-redis.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-rt.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-service-account.yaml"
 
-sleep 30
+sleep 20
+
+while [[ "$(kubectl -n $NAMESPACE get service trillo-rt -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" = '' ]]; do sleep 3; done
+INGRESS_IP=$(kubectl -n $NAMESPACE get service trillo-rt -o jsonpath='{.status.loadBalancer.ingress[0].ip}' | sed 's/"//g')
+
+echo "External IP: $INGRESS_IP"
 
 patch_assembly_phase.sh --status="Success"
 
 clean_iam_resources.sh
 
-echo "Trillo Platform is installed and running at https://$(get_domain_name)"
+echo "Trillo Platform is installed and running at https://$INGRESS_IP"
 
 trap - EXIT
