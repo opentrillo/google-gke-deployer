@@ -43,11 +43,13 @@ spec:
       restartPolicy: Always
       volumes:
       - name: trillo-repo
-        persistentVolumeClaim:
-          claimName: trillo-repo-pvc
+        nfs:
+          server: repo-nfs.trillo.svc.cluster.local
+          path: /
       - name: trillo-rt-appdata
-        persistentVolumeClaim:
-          claimName: trillo-rt-appdata-pvc
+        nfs:
+          server: appdata-nfs.trillo.svc.cluster.local
+          path: /
   selector:
     matchLabels:
       app: trillo-rt

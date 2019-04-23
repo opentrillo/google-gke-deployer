@@ -62,21 +62,19 @@ app_api_version=$(kubectl get "applications.app.k8s.io/$NAME" \
 create_manifests.sh
 
 ###Install Trillo ###
-kubectl apply -f "/data/manifest-expanded/pvpvc-stage1.yaml"
+kubectl apply -f "/data/manifest-expanded/deploy-pvc.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-nfs.yaml"
-kubectl apply -f "/data/manifest-expanded/pvpvc-stage2.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-mysql.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-ds.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-redis.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-rt.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-service-account.yaml"
 
-sleep 20
-
 while [[ "$(kubectl -n $NAMESPACE get service trillo-rt -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" = '' ]]; do sleep 3; done
 INGRESS_IP=$(kubectl -n $NAMESPACE get service trillo-rt -o jsonpath='{.status.loadBalancer.ingress[0].ip}' | sed 's/"//g')
-
 echo "External IP: $INGRESS_IP"
+
+while :; do (curl -k -sS --fail -o /dev/null "https://$INGRESS_IP") && break; echo "Testing platform readiness..." ;sleep 5; done
 
 patch_assembly_phase.sh --status="Success"
 

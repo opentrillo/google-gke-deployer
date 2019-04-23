@@ -35,8 +35,9 @@ spec:
               mountPath: /data
       volumes:
         - name: redis-persistent-storage
-          persistentVolumeClaim:
-            claimName: trillo-rt-appdata-pvc
+          nfs:
+            server: appdata-nfs.trillo.svc.cluster.local
+            path: /
 ---
 apiVersion: v1
 kind: Service
