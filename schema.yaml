@@ -11,13 +11,13 @@ properties:
   trilloDSImage:
     type: string
     description: This is the Trillo Data Service image.
-    default: gcr.io/trillo-k8s-public/trillo-data-service:1
+    default: gcr.io/trillo-k8s-public/trillo-data-service:3.0.0
     x-google-marketplace:
       type: IMAGE
   trilloRTImage:
     type: string
     description: This is the Trillo Runtime Service image.
-    default: gcr.io/trillo-k8s-public/trillo-rt:1
+    default: gcr.io/trillo-k8s-public/trillo-rt:3.0.0
     x-google-marketplace:
       type: IMAGE
   mysqlDBPassword:
