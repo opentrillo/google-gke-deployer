@@ -45,7 +45,7 @@ spec:
       volumes:
         - name: trillo-repo
           nfs:
-            server: repo-nfs.trillo.svc.cluster.local
+            server: repo-nfs.$namespace.svc.cluster.local
             path: /
   selector:
     matchLabels:

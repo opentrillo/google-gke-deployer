@@ -36,7 +36,7 @@ spec:
       volumes:
         - name: redis-persistent-storage
           nfs:
-            server: appdata-nfs.trillo.svc.cluster.local
+            server: appdata-nfs.$namespace.svc.cluster.local
             path: /
 ---
 apiVersion: v1

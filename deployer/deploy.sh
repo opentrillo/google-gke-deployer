@@ -16,9 +16,31 @@
 
 set -eox pipefail
 
-INGRESS_IP=127.0.0.1
+#INGRESS_IP=127.0.0.1
 
 # This is the entry point for the production deployment
+get_domain_name() {
+  echo "$NAME.$NAMESPACE.trillo.io"
+}
+
+#create self-signed cert
+create_cert(){
+  local source=/data/server.config
+  local config_file; config_file=$(mktemp)
+  cp $source $config_file
+
+  sed -i -e "s#gke.trillo.io#$(get_domain_name)#" "$config_file"
+
+  openssl req -config "$config_file" -new -newkey rsa:2048 -nodes -keyout server.key -out server.csr
+
+  echo "Created server.key"
+  echo "Created server.csr"
+
+  openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+  echo "Created server.crt (self-signed)"
+
+  kubectl create secret tls $NAME-tls --cert=server.crt --key=server.key
+}
 
 # If any command returns with non-zero exit code, set -e will cause the script
 # to exit. Prior to exit, set App assembly status to "Failed".
@@ -70,16 +92,25 @@ kubectl apply -f "/data/manifest-expanded/deploy-redis.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-rt.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-service-account.yaml"
 
-while [[ "$(kubectl -n $NAMESPACE get service trillo-rt -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" = '' ]]; do sleep 3; done
-INGRESS_IP=$(kubectl -n $NAMESPACE get service trillo-rt -o jsonpath='{.status.loadBalancer.ingress[0].ip}' | sed 's/"//g')
-echo "External IP: $INGRESS_IP"
+create_cert
 
-while :; do (curl -k -sS --fail -o /dev/null "https://$INGRESS_IP") && break; echo "Testing platform readiness..." ;sleep 5; done
+#kubectl -n $NAMESPACE get service trillo-rt -o json
+
+#while [[ "$(kubectl -n $NAMESPACE get service trillo-rt -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" = '' ]]; do sleep 3; done
+#INGRESS_IP=$(kubectl -n $NAMESPACE get service trillo-rt -o jsonpath='{.status.loadBalancer.ingress[0].ip}' | sed 's/"//g')
+#echo "External IP: $INGRESS_IP"
+
+#while :; do (curl -k -sS --fail -o /dev/null "https://$INGRESS_IP") && break; echo "Testing platform readiness..." ;sleep 5; done
+
+#sed -i -e "s#gke.trillo.io#$(get_domain_name)#" "/data/manifest-expanded/rt-ingress.yaml"
+kubectl apply -f "/data/manifest-expanded/rt-ingress.yaml"
+
+sleep 20
 
 patch_assembly_phase.sh --status="Success"
 
 clean_iam_resources.sh
 
-echo "Trillo Platform is installed and running at https://$INGRESS_IP"
+#echo "Trillo Platform is installed and running at https://$INGRESS_IP"
 
 trap - EXIT

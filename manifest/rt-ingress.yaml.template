@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tls-ingress
+  namespace: $namespace
+  annotations:
+    kubernetes.io/ingress.allow-http: "false" # disable HTTP
+spec:
+  tls:
+    - secretName: $name-tls
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: trillo-rt
+              servicePort: 443

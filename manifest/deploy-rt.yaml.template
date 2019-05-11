@@ -40,15 +40,21 @@ spec:
               scheme: HTTPS
               port: 8020
               path: /_healthcheck
+          readinessProbe:
+            initialDelaySeconds: 180
+            httpGet:
+              scheme: HTTPS
+              port: 8020
+              path: /_healthcheck
       restartPolicy: Always
       volumes:
       - name: trillo-repo
         nfs:
-          server: repo-nfs.trillo.svc.cluster.local
+          server: repo-nfs.$namespace.svc.cluster.local
           path: /
       - name: trillo-rt-appdata
         nfs:
-          server: appdata-nfs.trillo.svc.cluster.local
+          server: appdata-nfs.$namespace.svc.cluster.local
           path: /
   selector:
     matchLabels:
@@ -59,12 +65,15 @@ kind: Service
 metadata:
   name: trillo-rt
   namespace: $namespace
+  annotations:
+    cloud.google.com/app-protocols: '{"my-https-port":"HTTPS"}'
 spec:
+  type: NodePort
   selector:
     app: trillo-rt
   ports:
-    - name: https
+    - name: my-https-port
+      protocol: TCP
       port: 443
       targetPort: 8020
-      protocol: TCP
-  type: LoadBalancer # Internet facing ELB
+
