@@ -7,11 +7,12 @@ metadata:
     kubernetes.io/ingress.allow-http: "false" # disable HTTP
 spec:
   tls:
-    - secretName: $name-tls
+  - hosts:
+    secretName: $name-tls
   rules:
-    - http:
-        paths:
-          - path: /*
-            backend:
-              serviceName: trillo-rt
-              servicePort: 443
+  - http:
+      paths:
+        - path: /*
+          backend:
+            serviceName: trillo-rt
+            servicePort: 443

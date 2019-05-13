@@ -22,17 +22,19 @@ properties:
       type: IMAGE
   mysqlDBPassword:
     type: string
-    title: MySQL Password
-    description: MySQL password for the root account.
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
   redisCachePassword:
     type: string
-    title: Redis Password
-    description: Redis cache server password.
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
 
 required:
 - name
 - namespace
-- trilloDSImage
-- trilloRTImage
-- mysqlDBPassword
-- redisCachePassword
+
+
