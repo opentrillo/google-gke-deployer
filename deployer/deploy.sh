@@ -34,32 +34,6 @@ handle_failure() {
   exit $code
 }
 
-
-get_domain_name() {
-  INGRESS_ID=$(date +'%s')
-  echo "$NAME-$INGRESS_ID.trillo.io"
-}
-
-#create self-signed cert
-create_cert(){
-  local source=/data/server.config
-  local config_file; config_file=$(mktemp)
-  cp $source $config_file
-
-  sed -i -e "s#gke.trillo.io#$(get_domain_name)#" "$config_file"
-
-  openssl req -config "$config_file" -new -newkey rsa:2048 -nodes -keyout server.key -out server.csr
-
-  echo "Created server.key"
-  echo "Created server.csr"
-
-  openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
-  echo "Created server.crt (self-signed)"
-
-  kubectl create secret tls $NAME-tls --cert=server.crt --key=server.key
-}
-
-
 trap "handle_failure" EXIT
 
 NAME="$(/bin/print_config.py \
@@ -92,14 +66,13 @@ kubectl apply -f "/data/manifest-expanded/deploy-ds.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-redis.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-rt.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-service-account.yaml"
-
-#create self-signed cert
-create_cert
 kubectl apply -f "/data/manifest-expanded/rt-ingress.yaml"
+kubectl apply -f "/data/manifest-expanded/deploy-ubbagent.yaml"
+
 
 #check status and test the health
-while [[ "$(kubectl -n $NAMESPACE get ingress tls-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" = '' ]]; do sleep 10; done
-INGRESS_IP=$(kubectl -n $NAMESPACE get ingress tls-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}' | sed 's/"//g')
+while [[ "$(kubectl -n $NAMESPACE get ingress $NAME-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" = '' ]]; do sleep 10; done
+INGRESS_IP=$(kubectl -n $NAMESPACE get ingress $NAME-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}' | sed 's/"//g')
 echo "External IP: $INGRESS_IP"
 
 echo "Testing platform readiness..."

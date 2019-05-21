@@ -27,6 +27,7 @@ COPY deployer/deploy.sh /bin/
 COPY deployer/deploy_with_tests.sh /bin/
 COPY schema.yaml /data/
 COPY server.config /data/
+COPY reporting_secret.yaml /data/
 COPY manifest /data/manifest
 RUN mkdir -p /data/final_values
 

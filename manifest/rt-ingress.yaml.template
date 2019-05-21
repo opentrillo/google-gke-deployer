@@ -1,14 +1,14 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: tls-ingress
+  name: $name-ingress
   namespace: $namespace
   annotations:
     kubernetes.io/ingress.allow-http: "false" # disable HTTP
 spec:
   tls:
   - hosts:
-    secretName: $name-tls
+    secretName: $name-tls-secret
   rules:
   - http:
       paths:

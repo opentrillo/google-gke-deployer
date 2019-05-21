@@ -76,4 +76,15 @@ spec:
       protocol: TCP
       port: 443
       targetPort: 8020
-
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $name-tls-secret
+  labels:
+    app.kubernetes.io/name: "$name"
+    app.kubernetes.io/component: tls-secret
+data:
+  tls.key: "$base64EncodedPrivateKey"
+  tls.crt: "$base64EncodedCertificate"
+type: kubernetes.io/tls

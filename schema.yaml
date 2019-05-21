@@ -20,6 +20,11 @@ properties:
     default: gcr.io/trillo-k8s-public/trillo-rt:3.0
     x-google-marketplace:
       type: IMAGE
+  reportingSecret:
+    type: string
+    default: /data/reporting_secret.yaml
+    x-google-marketplace:
+      type: REPORTING_SECRET
   mysqlDBPassword:
     type: string
     x-google-marketplace:
@@ -32,9 +37,17 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 32
-
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: base64EncodedPrivateKey
+          base64EncodedCertificate: base64EncodedCertificate
 required:
 - name
 - namespace
+- reportingSecret
 
 
