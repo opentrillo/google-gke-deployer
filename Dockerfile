@@ -18,15 +18,10 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
     apt-get update -y && apt-get install google-cloud-sdk -y
 
-# Download repo files
-#RUN apt-get -y install git
-#RUN git clone https://github.com/opentrillo/google-gke-deployer.git
-
 COPY deployer/create_manifests.sh /bin/
 COPY deployer/deploy.sh /bin/
 COPY deployer/deploy_with_tests.sh /bin/
 COPY schema.yaml /data/
-COPY server.config /data/
 COPY reporting_secret.yaml /data/
 COPY manifest /data/manifest
 RUN mkdir -p /data/final_values

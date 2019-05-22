@@ -45,6 +45,7 @@ properties:
         generatedProperties:
           base64EncodedPrivateKey: base64EncodedPrivateKey
           base64EncodedCertificate: base64EncodedCertificate
+
 required:
 - name
 - namespace

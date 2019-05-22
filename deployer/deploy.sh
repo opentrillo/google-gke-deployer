@@ -67,7 +67,7 @@ kubectl apply -f "/data/manifest-expanded/deploy-redis.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-rt.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-service-account.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-ingress.yaml"
-kubectl apply -f "/data/manifest-expanded/deploy-ubbagent.yaml"
+#kubectl apply -f "/data/manifest-expanded/deploy-ubbagent.yaml"
 
 
 #check status and test the health
