@@ -42,6 +42,7 @@ NAME="$(/bin/print_config.py \
 NAMESPACE="$(/bin/print_config.py \
     --xtype NAMESPACE \
     --values_mode raw)"
+
 export NAME
 export NAMESPACE
 
@@ -67,8 +68,10 @@ kubectl apply -f "/data/manifest-expanded/deploy-redis.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-rt.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-service-account.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-ingress.yaml"
-#kubectl apply -f "/data/manifest-expanded/deploy-ubbagent.yaml"
 
+#Install license agent
+#kubectl apply -f "/data/ubbagent-config.yaml"
+#kubectl apply -f "/data/manifest-expanded/deploy-ubbagent.yaml"
 
 #check status and test the health
 while [[ "$(kubectl -n $NAMESPACE get ingress $NAME-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" = '' ]]; do sleep 10; done

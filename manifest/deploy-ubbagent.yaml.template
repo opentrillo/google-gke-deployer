@@ -46,7 +46,8 @@ spec:
               mountPath: /var/lib/ubbagent
       volumes:
         - name: ubbagent-config
-          emptyDir: {}
+          configMap:
+            name: agent-config
         - name: ubbagent-state
           emptyDir: {}
 ---

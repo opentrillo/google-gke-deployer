@@ -6,6 +6,7 @@ properties:
      type: NAME
   namespace:
     type: string
+    default: default
     x-google-marketplace:
       type: NAMESPACE
   trilloDSImage:
@@ -22,7 +23,7 @@ properties:
       type: IMAGE
   reportingSecret:
     type: string
-    default: /data/reporting_secret.yaml
+    default: /data/reporting_secret_fake.yaml
     x-google-marketplace:
       type: REPORTING_SECRET
   mysqlDBPassword:
