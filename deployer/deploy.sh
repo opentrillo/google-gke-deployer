@@ -60,6 +60,7 @@ app_api_version=$(kubectl get "applications.app.k8s.io/$NAME" \
 create_manifests.sh
 
 ###Install Trillo ###
+kubectl apply -f "/data/manifest-expanded/ubbagent-config.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-pvc.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-nfs.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-mysql.yaml"
@@ -68,10 +69,6 @@ kubectl apply -f "/data/manifest-expanded/deploy-redis.yaml"
 kubectl apply -f "/data/manifest-expanded/deploy-rt.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-service-account.yaml"
 kubectl apply -f "/data/manifest-expanded/rt-ingress.yaml"
-
-#Install license agent
-#kubectl apply -f "/data/ubbagent-config.yaml"
-#kubectl apply -f "/data/manifest-expanded/deploy-ubbagent.yaml"
 
 #check status and test the health
 while [[ "$(kubectl -n $NAMESPACE get ingress $NAME-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" = '' ]]; do sleep 10; done
