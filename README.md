@@ -29,7 +29,7 @@ Make files are set up to use Google Container Registry (GCR). Ensure that you GC
 [Enable the GCR API](https://console.cloud.google.com/apis/library/containerregistry.googleapis.com)
 
 ## Building the Deployer Image
-Build from the [Dockerfile](https://github.com/opentrillo/google-gke-deployer/blob/master/Dockerfile).
+Build from the [Dockerfile](https://github.com/opentrillo/google-gke-deployer/Dockerfile).
 
 ```shell
 docker build -t deployer:latest .
