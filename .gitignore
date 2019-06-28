@@ -2,3 +2,4 @@
 .build/
 .idea/
 google-gke-deployer.iml
+reporting-secret.yaml
