@@ -38,7 +38,7 @@ spec:
       For support, [visit the support page](https://www.trillo.io/WebSite/Support).
   selector:
     matchLabels:
-      app.kubernetes.io/name: "$name"
+      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   componentKinds:
   - group: v1
     kind: Deployment

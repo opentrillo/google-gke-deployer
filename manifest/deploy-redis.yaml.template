@@ -9,6 +9,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
+      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
       app: trillo-redis
   template:
     metadata:
@@ -51,4 +52,5 @@ spec:
   ports:
     - port: 6379
   selector:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app: trillo-redis

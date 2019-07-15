@@ -81,6 +81,7 @@ spec:
             path: /
   selector:
     matchLabels:
+      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
       app: trillo-ds
 ---
 apiVersion: v1
@@ -90,6 +91,7 @@ metadata:
   namespace: $namespace
 spec:
   selector:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app: trillo-ds
   ports:
     - name: https
