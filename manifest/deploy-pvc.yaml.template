@@ -3,10 +3,9 @@ apiVersion: v1
 metadata:
   name: mysql-volumeclaim
   namespace: $namespace
+  labels:
+    app.kubernetes.io/name: "$name"
 spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   accessModes:
     - ReadWriteOnce
   resources:
@@ -18,10 +17,9 @@ apiVersion: v1
 metadata:
   name: repo-volumeclaim
   namespace: $namespace
+  labels:
+    app.kubernetes.io/name: "$name"
 spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   accessModes:
     - ReadWriteOnce
   resources:
@@ -33,10 +31,9 @@ apiVersion: v1
 metadata:
   name: appdata-volumeclaim
   namespace: $namespace
+  labels:
+    app.kubernetes.io/name: "$name"
 spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   accessModes:
     - ReadWriteOnce
   resources:

@@ -4,6 +4,7 @@ metadata:
   name: repo-nfs
   namespace: $namespace
   labels:
+    app.kubernetes.io/name: "$name"
     app: repo-nfs
 spec:
   replicas: 1
@@ -35,7 +36,6 @@ spec:
             claimName: repo-volumeclaim
   selector:
     matchLabels:
-      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
       app: repo-nfs
 ---
 apiVersion: apps/v1
@@ -44,6 +44,7 @@ metadata:
   name: appdata-nfs
   namespace: $namespace
   labels:
+    app.kubernetes.io/name: "$name"
     app: appdata-nfs
 spec:
   replicas: 1
@@ -75,7 +76,6 @@ spec:
             claimName: appdata-volumeclaim
   selector:
     matchLabels:
-      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
       app: appdata-nfs
 ---
 apiVersion: v1
@@ -83,9 +83,10 @@ kind: Service
 metadata:
   name: repo-nfs
   namespace: $namespace
+  labels:
+    app.kubernetes.io/name: "$name"
 spec:
   selector:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app: repo-nfs
   ports:
     - name: nfs
@@ -102,9 +103,10 @@ kind: Service
 metadata:
   name: appdata-nfs
   namespace: $namespace
+  labels:
+    app.kubernetes.io/name: "$name"
 spec:
   selector:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app: appdata-nfs
   ports:
     - name: nfs

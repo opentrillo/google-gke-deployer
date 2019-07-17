@@ -5,11 +5,11 @@ metadata:
   namespace: $namespace
   labels:
     app: ubbagent
+    app.kubernetes.io/name: "$name"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
       app: ubbagent
   template:
     metadata:
@@ -59,10 +59,10 @@ metadata:
   namespace: $namespace
   labels:
     app: ubbagent
+    app.kubernetes.io/name: "$name"
 spec:
   type: ClusterIP
   ports:
     - port: 6379
   selector:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app: ubbagent

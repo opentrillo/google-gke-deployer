@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: agent-config
   namespace: $namespace
+  labels:
+    app.kubernetes.io/name: "$name"
 data:
   config.yaml: |
     identities:
