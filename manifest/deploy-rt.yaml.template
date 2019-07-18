@@ -5,6 +5,7 @@ metadata:
   namespace: $namespace
   labels:
     app: trillo-rt
+    app.kubernetes.io/name: "$name"
 spec:
   replicas: 2
   template:
