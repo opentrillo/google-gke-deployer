@@ -1,0 +1,44 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "$APP_INSTANCE_NAME"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgODQxLjkgNTk1LjMiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDg0MS45IDU5NS4zOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6IzVGQzdEMjt9LnN0MXtmaWxsOiNFNjNDNzI7fS5zdDJ7ZmlsbDojMzQzQTU0O30uc3Qze2ZpbGw6IzYwM0M3MTt9PC9zdHlsZT48Zz48Zz48cGF0aCBjbGFzcz0ic3QwIiBkPSJNODAwLjQsMTQybC01MC4xLDE0NS4zQzc1MC4zLDI4Ny4zLDY2NS42LDE5Niw4MDAuNCwxNDJ6Ii8+PHBhdGggY2xhc3M9InN0MSIgZD0iTTgwMC4yLDE0MmwtMTQ1LjgsNTAuM0M2NTQuMywxOTIuMyw3NDcuMSwyNzcuMiw4MDAuMiwxNDJ6Ii8+PC9nPjxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0xNjUuNywyNTQuNmg0OC42djIwLjNoMC41YzAsMCwxNS40LTI0LjUsNDMuMS0yNC41YzE4LjEsMCwzMC44LDguOCwzMC44LDguOGwtMjAuMyw0MS4yYzAsMC05LjEtNy43LTI1LjMtNy43Yy0yNS4zLDAtMjguOCwyNS0yOC44LDI4LjZ2NzQuMmgtNDguNlYyNTQuNnoiLz48ZWxsaXBzZSBjbGFzcz0ic3QyIiBjeD0iMzI3LjUiIGN5PSIxOTYuMyIgcng9IjI4LjkiIHJ5PSIyOC44Ii8+PHJlY3QgeD0iMzAyLjUiIHk9IjI1NC42IiBjbGFzcz0ic3QyIiB3aWR0aD0iNDguNiIgaGVpZ2h0PSIxNDAuOSIvPjxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0zODUuNSwxNTkuM2g0OC42djIzNi4zaC00OC42VjE1OS4zeiIvPjxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik00NjcsMTU5LjNoNDguNnYyMzYuM0g0NjdWMTU5LjN6Ii8+PHBhdGggY2xhc3M9InN0MiIgZD0iTTY1LjgsMjAxLjRoNDguNnY1Mi41aDI5LjdWMjkxaC0yOS43djQ0LjhjMCwxMy4yLDMuMywxOS41LDExLDE5LjVjNi4zLDAsMTIuMS00LjQsMTIuMS00LjRsMTIuMSwzOS4zYzAsMC0xNS43LDguOC0zNS43LDguOGMtMzguNywwLTQ4LjEtMjguOC00OC4xLTUzLjhWMjkxSDQ1LjR2LTM3LjFoMjAuM1YyMDEuNHoiLz48cGF0aCBjbGFzcz0ic3QyIiBkPSJNNjIxLjQsMjQyLjZjLTQzLjUsMC03OC44LDM1LjMtNzguOCw3OC44czM1LjMsNzguOCw3OC44LDc4LjhjNDMuNSwwLDc4LjgtMzUuMyw3OC44LTc4LjhTNjY1LDI0Mi42LDYyMS40LDI0Mi42eiBNNjIxLjQsMzU2LjVjLTE5LjMsMC0zNS0xNS43LTM1LTM1YzAtMTkuMywxNS43LTM1LDM1LTM1YzE5LjMsMCwzNSwxNS43LDM1LDM1QzY1Ni40LDM0MC44LDY0MC44LDM1Ni41LDYyMS40LDM1Ni41eiIvPjxwYXRoIGNsYXNzPSJzdDMiIGQ9Ik03MjQuNCwyMTcuN2MwLjEtMC43LDAuMi0yLjgsMC44LTUuN2MwLjMtMS43LDAuOS00LjYsMi4yLTguNGMxLjEtMy4xLDIuMS01LjMsMi43LTYuNmMwLjUtMSwwLjktMS44LDEuMi0yLjRjMCwwLDAsMCwwLDBjMC4zLTAuNiwxLjEtMi4xLDIuNC00LjJjMC42LTEsMi40LTMuOSw1LjQtNy43YzMuNS00LjMsNi41LTcuMyw4LjMtOWMwLjktMC45LDQuNC00LjIsOS41LTguMWMyLjktMi4yLDUuMi0zLjgsNi44LTQuOGMxLjEtMC43LDQuNS0zLDkuNS01LjhjNy41LTQuMywxMy42LTcuMSwxNy4zLTguOGMzLjktMS44LDcuMy0zLjIsOS42LTQuMWMtMC42LDEuNC0xLjIsMy4yLTIuMSw1LjFjLTAuNCwwLjktMS41LDMuNS0yLjksNi42Yy0xLjMsMi45LTMuNCw3LjQtNi41LDEzLjFjLTMuMiw1LjktNiwxMC4yLTYuOCwxMS40Yy0zLjEsNC43LTUuNSw3LjgtNi4yLDguOGMtMS4zLDEuNy0yLjQsMy0zLDMuN2MtMS41LDEuOC00LDQuNy03LjcsOC4xYy0yLjMsMi4xLTQuMSwzLjYtNC45LDQuM2MtMi40LDItNC40LDMuMy01LjEsMy44Yy0xLjcsMS4xLTQuNywzLjItOSw1LjNjLTMuOCwxLjgtNywzLTkuMiwzLjZjLTMuMiwxLTcuNCwyLTEyLjUsMi41QzcyNC40LDIxOC4xLDcyNC40LDIxOCw3MjQuNCwyMTcuN3oiLz48L2c+PC9zdmc+
+    marketplace.cloud.google.com/deploy-info: '{partner_id: "trillo", product_id: "trillo-platform", partner_name: "Trillo Inc."}'
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+spec:
+  descriptor:
+    type: 'Trillo Platform'
+    version: '3.0.0'
+    description: |-
+      Trillo is an aPaaS (Application Platform as a Service)  is a full stack platform with Cloud-Native, Serverless & Model-Driven capabilities.
+    maintainers:
+    - name: Trillo Platform Engineering
+    url: https://trillo.io
+    links:
+    - description: Trillo Platform Docs
+      url: https://learn.trillo.io
+    notes: |-
+      For support, [visit the support page](https://www.trillo.io/WebSite/Support).
+  info:
+  - name: Trillo Platform
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: $APP_INSTANCE_NAME-TRILLO-PLATFORM
+  - name: Trillo Platform  Namespace
+    value: $NAMESPACE
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+  componentKinds:
+  - group: v1
+    kind: Deployment
+  - group: v1beta1
+    kind: PersistentVolumeClaim
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: Ingress
