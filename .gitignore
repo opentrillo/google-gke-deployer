@@ -1,5 +1,2 @@
-.DS_Store
-.build/
-.idea/
-google-gke-deployer.iml
-reporting-secret.yaml
+# Created by .ignore support plugin (hsz.mobi)
+*.iml
