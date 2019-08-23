@@ -27,9 +27,9 @@ spec:
     type: Reference
     valueFrom:
       serviceRef:
-        name: $name-TRILLO-PLATFORM
+        name: $name
   - name: Trillo Platform  Namespace
-    value: $NAMESPACE
+    value: $namespace
   selector:
     matchLabels:
       app.kubernetes.io/name: "$name"
