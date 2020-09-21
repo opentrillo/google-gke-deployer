@@ -19,10 +19,10 @@ export NETWORK=projects/$OTHER_NETWORK_PROJECT/global/networks/$NETWORK_SHORT
 export SUBNETWORK=projects/$OTHER_NETWORK_PROJECT/regions/$REGION/subnetworks/$SUBNETWORK_SHORT
 
 #Application server name
-#Example:
-#export APPSERVER_NAME=appserver-$PROJECT_ID.trilloapps.com
 #**** Must Provide Yours AppServer's full DNS NAME *****
 export APPSERVER_NAME=
+#Example: copy from below if you like to use trilloapps.com
+#export APPSERVER_NAME=appserver-$PROJECT_ID.trilloapps.com
 
 
 #Bucket
