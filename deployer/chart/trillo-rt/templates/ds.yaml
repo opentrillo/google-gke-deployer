@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: trillo-ds
-          image: {{ .Values.ds.image }}:{{ .Values.rtdsTag }}
+          image: {{ .Values.ds.image }}:{{ .Values.ds.tag }}
           imagePullPolicy: {{ .Values.ds.pullPolicy }}
           securityContext:
             privileged: true
