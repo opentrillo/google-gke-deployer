@@ -8,11 +8,11 @@ export REGISTRY=gcr.io/$PROJECT_ID
 export APP_NAME=trillo-rt
 export TAG=1
 
-export TEST_PROJECT_ID=lofty-layout-290204
-export mysqlAddress=10.101.0.3
+export TEST_PROJECT_ID=optimal-buffer-290206
+export mysqlAddress=172.20.0.3
 export edgeIpaddress=-na-
-export server=appserver-lofty-layout-290204.trilloapps.com
-export bucket=trillo-lofty-layout-290204
+export server=aappserver-optimal-buffer-290206.trilloapps.com
+export bucket=trillo-optimal-buffer-290206
 
 #gcloud config set project $PROJECT_ID
 
