@@ -13,19 +13,19 @@ edge:
 mail:
   enabled: true
 
-namespace: trillo
+namespace: null
 
 nfsMount: /nfsmnt
  
 pubsub:
-  image: gcr.io/trillo-k8s-public/trillo-rt/trillo-gke-tasker
-  tag: 3.11.0
+  image: null
+  tag: null
   replicaCount: 1
   pullPolicy: IfNotPresent
 
 ds:
-  image: gcr.io/trillo-k8s-public/trillo-rt/trillo-data-service
-  tag: 3.11.0
+  image: null
+  tag: null
   replicaCount: 1
   pullPolicy: IfNotPresent
   quartz:
@@ -33,8 +33,8 @@ ds:
     clustered: false
 
 rt:
-  image: gcr.io/trillo-k8s-public/trillo-rt
-  tag: 3.11.0
+  image: null
+  tag: null
   pullPolicy: IfNotPresent
   replicaCount: 1
   credentials:

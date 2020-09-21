@@ -5,7 +5,7 @@
 ***Please install the application from the GCP marketplace***
 Link: https://console.cloud.google.com/marketplace/details/trillo-k8s-public/trillo-platform
 
-Please provide these values to the cluster application, below.
+Step-1: Please provide these values to the cluster application, below.
 
 Name            = trillo-rt
 Cluster Name    = ${CLUSTER_NAMESPACE}
@@ -17,14 +17,14 @@ SFTP server     = ${EDGE_INTERNAL_IP}
 **********************************************************************************************
 **********************************************************************************************
 
-Also, Please have the following DNS A-record added to the DNS server.
+Step-2: Also, Please have the following DNS A-record added to the DNS server.
 
 Server Name = ${APPSERVER_DNS_NAME}
 Server IP   = ${APPSERVER_IP}
 
 ***********************************************************************************************
 
-Once the DNS record is entered and verified (dig) then the app-server will be running at:
+Step-3: Once the DNS record is entered and verified (dig) then the app-server will be running at:
 
 Server Address     =  https://${APPSERVER_DNS_NAME}
 Server User        =  ${APPSERVER_DEFAULT_USER}

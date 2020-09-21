@@ -8,8 +8,8 @@ export REGISTRY=gcr.io/$PROJECT_ID
 export APP_NAME=trillo-rt
 export TAG=3.11.0
 
-export TEST_PROJECT_ID=mp-gke-testing-290220
-export mysqlAddress=10.30.0.3
+export TEST_PROJECT_ID=mp-gke-testing-290223
+export mysqlAddress=10.27.0.3
 export edgeIpaddress=-na-
 export server=aappserver-$TEST_PROJECT_ID.trilloapps.com
 export bucket=trillo-$TEST_PROJECT_ID
@@ -18,12 +18,6 @@ export bucket=trillo-$TEST_PROJECT_ID
 
 gcloud container clusters get-credentials trillo-gke --zone us-central1-c --project $TEST_PROJECT_ID
 kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)
-
-#kubectl create namespace test-ns
-
-
-#export TAG=3.12
-#export REGISTRY=gcr.io/$PROJECT_ID
 
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 

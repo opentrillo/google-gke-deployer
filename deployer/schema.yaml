@@ -9,7 +9,22 @@ x-google-marketplace:
     releaseNote: >-
       Major release of Trillo Apps.
   # The images property will be filled in during part 2
-  images: {}
+  images: {
+    '':  # Primary image has no name.
+    properties:
+      rt.image.repo:
+        type: REPO_WITH_REGISTRY
+      rt.image.tag:
+        type: TAG
+      ds.image.repo:
+        type: REPO_WITH_REGISTRY
+      ds.image.tag:
+        type: TAG
+      pubsub.image.repo:
+        type: REPO_WITH_REGISTRY
+      pubsub.image.tag:
+        type: TAG
+   }
 
 properties:
   name:
