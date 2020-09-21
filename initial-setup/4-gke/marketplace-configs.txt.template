@@ -2,7 +2,7 @@
 **********************************************************************************************
 **********************************************************************************************
 ***GCP Kubernetes marketplace install is enabled***
-***Please install the application for the GCP marketplace***
+***Please install the application from the GCP marketplace***
 Link: https://console.cloud.google.com/marketplace/details/trillo-k8s-public/trillo-platform
 
 Please provide these values to the cluster application, below.
