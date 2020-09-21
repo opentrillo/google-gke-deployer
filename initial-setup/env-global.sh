@@ -21,6 +21,7 @@ export SUBNETWORK=projects/$OTHER_NETWORK_PROJECT/regions/$REGION/subnetworks/$S
 #Application server name
 #Example:
 #export APPSERVER_NAME=appserver-$PROJECT_ID.trilloapps.com
+#**** Must Provide AppServer's full DNS NAME *****
 export APPSERVER_NAME=
 
 
@@ -55,6 +56,9 @@ export CLUSTER=trillo-gke
 #export CLUSTER=provide-name
 #------------------------------------
 
+#Application default namespace
+export CLUSTER_NAMESPACE=trillo
+
 #GKE App
 #------------------------------------
 export TRILLO_APPS_INSTALL_SOURCE=marketplace
@@ -63,10 +67,7 @@ export TRILLO_APPS_INSTALL_SOURCE=marketplace
 #Send email notifications (yes/no)
 export MAIL_ENABLED=yes
 
-#Application default namespace
-export CLUSTER_NAMESPACE=trillo
-
-#Packaged Application
+#Packaged Application (read-only)
 export TRILLO_PACKAGED_ORG_NAME=cloud
 
 #####################################
