@@ -10,9 +10,9 @@ fi
 
 . ../env-global.sh
 
-if [[ ! -v APPSERVER_NAME ]];
+if [ "$APPSERVER_NAME" == "" ]
 then
-  echo "Error: Please add your server in DNS records and provide its full name."
+  echo "Error: You must provide the provide the full dns name of the application server."
   exit 1
 fi
 

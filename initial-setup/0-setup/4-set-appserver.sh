@@ -11,6 +11,8 @@ fi
 source ../env-global.sh
 
 APPBUILDER_REQUIRED=no
+AUTO_CREATE_DNS_RECORD=no
+
 
 if [ "$APPBUILDER_REQUIRED" = "yes" ]
 then

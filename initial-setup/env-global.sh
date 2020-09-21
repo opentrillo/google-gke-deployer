@@ -7,23 +7,6 @@ export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 export SERVICE_ACCOUNT_ID=trillort-sa
 export SA_EMAIL=$SERVICE_ACCOUNT_ID@$PROJECT_ID.iam.gserviceaccount.com
 
-#DNS record for the Application server
-#Note#############################
-#run this script to reserve an ip address in the same GCP project
-#
-#    ./0-setup/reserve-ip-manual.sh
-#
-#then add above ip address to your dns and have a name assigned to it.
-#final test with the following command
-#    dig <full-server-domain-name>
-##################################
-export AUTO_CREATE_DNS_RECORD=no
-#export APPSERVER_NAME=full-server-domain-name
-
-#Example:
-#export APPSERVER_NAME=appserver-$PROJECT_ID.trilloapps.com
-#------------------------------------
-
 # Network settings
 # Be very careful when shared networks are used
 export ZONE=us-central1-c
@@ -34,6 +17,11 @@ export OTHER_NETWORK_PROJECT=$PROJECT_ID
 #for shared-network then allow this machine to use its networks
 export NETWORK=projects/$OTHER_NETWORK_PROJECT/global/networks/$NETWORK_SHORT
 export SUBNETWORK=projects/$OTHER_NETWORK_PROJECT/regions/$REGION/subnetworks/$SUBNETWORK_SHORT
+
+#Application server name
+#Example:
+#export APPSERVER_NAME=appserver-$PROJECT_ID.trilloapps.com
+export APPSERVER_NAME=
 
 
 #Bucket
