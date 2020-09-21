@@ -1,0 +1,19 @@
+**********************************************************************************************
+**********************************************************************************************
+**********************************************************************************************
+***GCP Kubernetes marketplace install is enabled***
+***Please install the application for the GCP marketplace***
+Link: https://console.cloud.google.com/marketplace/details/trillo-k8s-public/trillo-platform
+
+Please provide these values to the cluster application, below.
+
+Name            = trillo-apps
+Cluster Name    = $CLUSTER_NAMESPACE
+Server DNS name = ${APPSERVER_DNS_NAME}
+Bucket Name     = ${BUCKET_NAME}
+CloudSQL server = ${MYSQL_IP_ADDRESS}
+SFTP server     = ${EDGE_INTERNAL_IP}
+**********************************************************************************************
+**********************************************************************************************
+**********************************************************************************************
+

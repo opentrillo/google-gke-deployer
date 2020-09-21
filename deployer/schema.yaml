@@ -1,0 +1,55 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+  # The published version is required and MUST match the tag
+  # of the deployer image
+  publishedVersion: '4.1.0'
+  publishedVersionMetadata:
+    releaseNote: >-
+      Major release of Trillo Apps.
+  # The images property will be filled in during part 2
+  images: {}
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    default: trillo
+    x-google-marketplace:
+      type: NAMESPACE
+  server:
+    title: Server DNS name 
+    description: Full domain name of the server, e.g. cg.example.com
+    type: string
+    x-google-marketplace:
+      type: STRING
+  bucket:
+    title: Bucket Name 
+    description: Bucket name provisioned by the pre-installer
+    type: string
+    x-google-marketplace:
+      type: STRING
+  mysql.address:
+    title: CloudSQL server  
+    description: Private IP of the MySQL server provisioned by the pre-installer
+    type: string
+    x-google-marketplace:
+      type: STRING
+  edge.ipaddress:
+    title: SFTP server  
+    description: SFTP server is provisioned by the pre-installer. Leave it blank if there is none provisioned.
+    type: string
+    x-google-marketplace:
+      type: STRING
+    default: -na-
+
+required:
+- name
+- namespace
+- server
+- bucket
+- mysql.address

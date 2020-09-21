@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trillo-ds
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: trillo-ds
+    app.kubernetes.io/name: {{ .Release.Name }}
+    version: {{ .Chart.Version }}
+spec:
+  replicas: {{ .Values.ds.replicaCount }}
+  selector:
+    matchLabels:
+      app: trillo-ds
+  template:
+    metadata:
+      name: trillo-ds
+      namespace: {{ .Values.namespace }}
+      labels:
+        app: trillo-ds
+    spec:
+      containers:
+        - name: trillo-ds
+          image: {{ .Values.ds.image }}:{{ .Values.rtdsTag }}
+          imagePullPolicy: {{ .Values.ds.pullPolicy }}
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - SYS_ADMIN
+          lifecycle:
+            postStart:
+              exec:
+                command: ["gcsfuse", "-o", "rw,allow_other", "--file-mode=0775", "--dir-mode=0775", "--implicit-dirs", "{{ .Values.bucket }}", "/gcs"]
+            preStop:
+              exec:
+                command: ["fusermount", "-u", "/gcs"]
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+            - name: GCP_BUCKET_NAME
+              value: {{ .Values.bucket }}
+            - name: GCP_SERVICE_NAME
+              value: _default_
+            - name: DEFAULT_DATA_SERVER_TYPE
+              value: mysql
+            - name: DEFAULT_DATA_SERVER_HOST
+              value: {{ .Values.mysql.address }}
+            - name: DEFAULT_DATA_SERVER_PORT
+              value: '3306'
+            - name: DEFAULT_DATA_SERVER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: username
+            - name: DEFAULT_DATA_SERVER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: password
+            - name: CREDENTIALS_PROVIDER
+              value: {{ .Values.rt.credentials.provider }}
+            - name: REPO_DIR
+              value: {{ .Values.nfsMount }}/repo
+            - name: SERVER_PUBLIC_URL
+              value: https://{{ .Values.server }}
+            - name:  GCS_FILE_SERVER
+              value: {{ .Values.edge.ipaddress }}
+            - name: GCS_FILE_SERVER_USER
+              value: {{ .Values.edge.username }}
+            - name: RSA_PRIVATE_KEY
+              value: /etc/ssh-key/trillo-ssh
+            - name: APPDATA_DIR
+              value: /gcs
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: admin-credentials
+                  key: password
+            - name: TRILLO_USE_REDIS
+              value: 'false'
+            - name: REDIS_CREDENTIALS
+              valueFrom:
+                secretKeyRef:
+                  name: redis-credentials
+                  key: password
+          ports:
+            - containerPort: 8030
+              name: trillo-ds
+          volumeMounts:
+            - name: trillo-nfs-volume
+              mountPath: {{ .Values.nfsMount }}
+            - name: ssh-key-volume
+              mountPath: "/etc/ssh-key"
+              readOnly: true
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+          livenessProbe:
+            initialDelaySeconds: 300
+            tcpSocket:
+              port: 8030
+      volumes:
+        - name: ssh-key-volume
+          secret:
+            secretName: trillo-ssh-secret
+            defaultMode: 256
+        - name: trillo-nfs-volume
+          nfs:
+            server: trillo-nfs.{{ .Values.namespace }}.svc.cluster.local
+            path: /
+        - name: google-cloud-key
+          secret:
+            secretName: trillort-sa-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trillo-ds
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    version: {{ .Chart.Version }}
+spec:
+  selector:
+    app: trillo-ds
+  ports:
+    - name: https
+      port: 443
+      targetPort: 8030
+      protocol: TCP
+  type: ClusterIP # Internal

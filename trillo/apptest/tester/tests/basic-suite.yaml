@@ -1,8 +1,0 @@
-actions:
-- name: Sanity check
-  bashTest:
-    script: |-
-      curl -k https://$APP_INSTANCE_NAME-trillo-rt-svc.$NAMESPACE.svc.cluster.local:443
-    expect:
-      stdout:
-        contains: 'Ready'

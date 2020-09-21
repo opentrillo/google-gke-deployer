@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# GCS SFTP Edge configs
+export EDGE_INSTANCE=$EDGE_INSTANCE
+export EDGE_PUBLIC_IP=$EDGE_PUBLIC_IP
+export EDGE_INTERNAL_IP=$EDGE_INTERNAL_IP
+
