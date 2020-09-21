@@ -21,7 +21,7 @@ export SUBNETWORK=projects/$OTHER_NETWORK_PROJECT/regions/$REGION/subnetworks/$S
 #Application server name
 #Example:
 #export APPSERVER_NAME=appserver-$PROJECT_ID.trilloapps.com
-#**** Must Provide AppServer's full DNS NAME *****
+#**** Must Provide Yours AppServer's full DNS NAME *****
 export APPSERVER_NAME=
 
 
