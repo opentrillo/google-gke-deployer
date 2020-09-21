@@ -3,7 +3,7 @@ export NETWORK=default
 
 PROJECT_ID=$(gcloud config get-value core/project 2> /dev/null)
 
-export DEPLOYER_INSTANCE=trillo-ent-deployer
+export DEPLOYER_INSTANCE=trillo-preinstall-vm
 export DEPLOYER_IMAGE=trillo-ent-deployer
 
 echo "Creating deployer service account for the trillo platform"
