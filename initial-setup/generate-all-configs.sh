@@ -4,8 +4,7 @@ source ./env-global.sh
 
 if [ "$TRILLO_APPS_INSTALL_SOURCE" = "marketplace" ]
 then
-  cat ./0-setup/env_versions.sh \
-    ./0-setup/env_appserver.sh  \
+  cat ./0-setup/env_appserver.sh  \
     ./2-mysql/env_mysql.sh \
     ./3-edge/env_edge.sh \
     ./4-gke/env_predeploy.sh \

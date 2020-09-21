@@ -2,7 +2,6 @@
 
 source ../env-global.sh
 source ../0-setup/env_appserver.sh
-source ../0-setup/env_versions.sh
 source ../2-mysql/env_mysql.sh
 source ../3-edge/env_edge.sh
 

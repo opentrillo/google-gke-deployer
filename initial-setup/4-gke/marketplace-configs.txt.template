@@ -7,8 +7,8 @@ Link: https://console.cloud.google.com/marketplace/details/trillo-k8s-public/tri
 
 Please provide these values to the cluster application, below.
 
-Name            = trillo-apps
-Cluster Name    = $CLUSTER_NAMESPACE
+Name            = trillo-rt
+Cluster Name    = ${CLUSTER_NAMESPACE}
 Server DNS name = ${APPSERVER_DNS_NAME}
 Bucket Name     = ${BUCKET_NAME}
 CloudSQL server = ${MYSQL_IP_ADDRESS}
