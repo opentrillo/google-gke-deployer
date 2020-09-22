@@ -8,7 +8,6 @@ x-google-marketplace:
   publishedVersionMetadata:
     releaseNote: >-
       Major release of Trillo Apps.
-  # The images property will be filled in during part 2
   images: 
     '':  # Primary image has no name.
       properties:
