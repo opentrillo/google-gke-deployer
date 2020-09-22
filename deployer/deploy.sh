@@ -8,8 +8,8 @@ export REGISTRY=gcr.io/$PROJECT_ID
 export APP_NAME=trillo-rt
 export TAG=3.11.0
 
-export TEST_PROJECT_ID=mp-gke-testing-290223
-export mysqlAddress=10.27.0.3
+export TEST_PROJECT_ID=smooth-cycling-290323
+export mysqlAddress=10.63.0.3
 export edgeIpaddress=-na-
 export server=aappserver-$TEST_PROJECT_ID.trilloapps.com
 export bucket=trillo-$TEST_PROJECT_ID

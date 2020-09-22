@@ -4,28 +4,26 @@ x-google-marketplace:
   applicationApiVersion: v1beta1
   # The published version is required and MUST match the tag
   # of the deployer image
-  publishedVersion: '3.11.0'
+  publishedVersion: "$TAG"
   publishedVersionMetadata:
     releaseNote: >-
       Major release of Trillo Apps.
   # The images property will be filled in during part 2
-  images: {
+  images: 
     '':  # Primary image has no name.
-    properties:
-      rt.image.repo:
-        type: REPO_WITH_REGISTRY
-      rt.image.tag:
-        type: TAG
-      ds.image.repo:
-        type: REPO_WITH_REGISTRY
-      ds.image.tag:
-        type: TAG
-      pubsub.image.repo:
-        type: REPO_WITH_REGISTRY
-      pubsub.image.tag:
-        type: TAG
-   }
-
+      properties:
+        rt.image.repo:
+          type: REPO_WITH_REGISTRY
+        rt.image.tag:
+          type: TAG
+        ds.image.repo:
+          type: REPO_WITH_REGISTRY
+        ds.image.tag:
+          type: TAG
+        pubsub.image.repo:
+          type: REPO_WITH_REGISTRY
+        pubsub.image.tag:
+          type: TAG
 properties:
   name:
     type: string
