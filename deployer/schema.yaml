@@ -16,10 +16,14 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         rt.image.tag:
           type: TAG
+    trillo-data-service:
+      properties:
         ds.image.repo:
           type: REPO_WITH_REGISTRY
         ds.image.tag:
           type: TAG
+    trillo-gke-tasker:      
+      properties:
         pubsub.image.repo:
           type: REPO_WITH_REGISTRY
         pubsub.image.tag:
@@ -59,7 +63,6 @@ properties:
     x-google-marketplace:
       type: STRING
     default: -na-
-
 required:
 - name
 - namespace
