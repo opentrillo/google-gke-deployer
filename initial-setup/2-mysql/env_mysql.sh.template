@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# DB server configs
+export MYSQL_USERNAME=$MYSQL_USERNAME
+export MYSQL_PASSWORD=$MYSQL_PASSWORD
+export MYSQL_IP_ADDRESS=$MYSQL_IP_ADDRESS

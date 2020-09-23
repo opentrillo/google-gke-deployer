@@ -1,0 +1,231 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trillo-rt
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: trillo-rt
+    app.kubernetes.io/name: {{ .Release.Name }}
+    version: {{ .Chart.Version }}
+spec:
+  replicas: {{ .Values.rt.replicaCount }}
+  template:
+    metadata:
+      name: trillo-rt
+      namespace: {{ .Values.namespace }}
+      labels:
+        app: trillo-rt
+        app.kubernetes.io/name: {{ .Release.Name }}
+        version: {{ .Chart.Version }}
+    spec:
+      serviceAccountName: trillo-rt
+      containers:
+        - name: trillo-rt
+          image: {{ .Values.rt.image }}:{{ .Values.rt.tag }}
+          imagePullPolicy: {{ .Values.rt.pullPolicy }}
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - SYS_ADMIN
+          lifecycle:
+            postStart:
+              exec:
+                command: ["gcsfuse", "-o", "rw,allow_other", "--file-mode=0775", "--dir-mode=0775", "--implicit-dirs", "{{ .Values.bucket }}", "/gcs"]
+            preStop:
+              exec:
+                command: ["fusermount", "-u", "/gcs"]
+          env:
+            - name: TRILLO_PACKAGED_ORG_NAME
+              value: {{ .Values.trilloPackagedOrgName }}
+            - name: DATA_SERVICE_URL
+              value: https://trillo-ds.{{ .Values.namespace }}.svc.cluster.local:443
+            - name: TRILLO_USE_REDIS
+              value: 'false'
+            - name: REDIS_CREDENTIALS
+              valueFrom:
+                secretKeyRef:
+                  name: redis-credentials
+                  key: password
+            - name: CREDENTIALS_PROVIDER
+              value: {{ .Values.rt.credentials.provider }}
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+            - name: GCP_BUCKET_NAME
+              value: {{ .Values.bucket }}
+            - name: GCP_SERVICE_NAME
+              value: _default_
+            - name: DEFAULT_DATA_SERVER_TYPE
+              value: mysql
+            - name: DEFAULT_DATA_SERVER_HOST
+              value: {{ .Values.mysql.address }}
+            - name: DEFAULT_DATA_SERVER_PORT
+              value: '3306'
+            - name: DEFAULT_DATA_SERVER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: username
+            - name: DEFAULT_DATA_SERVER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: password
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: admin-credentials
+                  key: password
+            - name: QUARTZ_ENABLED
+              value: 'true'
+            - name: SERVER_PUBLIC_URL
+              value: https://{{ .Values.server }}
+            - name: DT_URL
+              value: https://www.trillo.io
+            - name: REPO_DIR
+              value: {{ .Values.nfsMount }}/repo
+            - name: APPDATA_DIR
+              value: /gcs
+            - name:  GCS_FILE_SERVER
+              value: {{ .Values.edge.ipaddress }}
+            - name: GCS_FILE_SERVER_USER
+              value: {{ .Values.edge.username }}
+            - name: RSA_PRIVATE_KEY
+              value: /etc/ssh-key/trillo-ssh
+            - name: MAIL_ENABLED
+              value: '{{ .Values.mail.enabled }}'
+          ports:
+            - containerPort: 8020
+              name: trillo-rt
+          volumeMounts:
+            - name: trillo-nfs-volume
+              mountPath: {{ .Values.nfsMount }}
+            - name: ssh-key-volume
+              mountPath: "/etc/ssh-key"
+              readOnly: true
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            failureThreshold: 6
+            httpGet:
+              scheme: HTTPS
+              path: /_healthcheck
+              port: 8020
+          readinessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            failureThreshold: 6
+            httpGet:
+              path: /_healthcheck
+              scheme: HTTPS
+              port: 8020
+      restartPolicy: Always
+      volumes:
+        - name: ssh-key-volume
+          secret:
+            secretName: trillo-ssh-secret
+            defaultMode: 256
+        - name: trillo-nfs-volume
+          nfs:
+            server: trillo-nfs.{{ .Values.namespace }}.svc.cluster.local
+            path: /
+        - name: google-cloud-key
+          secret:
+            secretName: trillort-sa-key
+  selector:
+    matchLabels:
+      app: trillo-rt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trillo-rt
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    version: {{ .Chart.Version }}
+  annotations:
+    cloud.google.com/app-protocols: '{"trillo-rt-https":"HTTPS"}'
+    cloud.google.com/backend-config: '{"default": "rt-bkendconfig"}'
+spec:
+  type: NodePort
+  selector:
+    app: trillo-rt
+  ports:
+    - name: trillo-rt-https
+      protocol: TCP
+      port: 8020
+      targetPort: 8020
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    version: {{ .Chart.Version }}
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "trillort-ip"
+    networking.gke.io/managed-certificates: trillo-certificate
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  rules:
+  - host: {{ .Values.server }}
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: trillo-rt
+          servicePort: 8020
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: trillo-rt
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    version: {{ .Chart.Version }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: trillo-rt-role-binding
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    version: {{ .Chart.Version }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit # Allows read/write access to most objects in a namespace. It does not allow viewing or modifying roles or rolebindings.
+subjects:
+  - kind: ServiceAccount
+    name: trillo-rt
+    namespace: {{ .Values.namespace }}
+---
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: trillo-certificate
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    version: {{ .Chart.Version }}
+spec:
+  domains:
+    - {{ .Values.server }}
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: rt-bkendconfig
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    version: {{ .Chart.Version }}
+spec:
+  timeoutSec: 120
