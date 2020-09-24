@@ -8,19 +8,8 @@ x-google-marketplace:
   publishedVersionMetadata:
     releaseNote: >-
       Major release of Trillo Apps.
-  images: {} 
-    '':  # Primary image has no name.
-      properties:
-        rt.image.repo:
-          type: FULL
-    trillo-data-service:
-      properties:
-        ds.image.repo:
-          type: FULL
-    trillo-gke-tasker:      
-      properties:
-        pubsub.image.repo:
-          type: FULL
+  images: {}
+
 properties:
   name:
     type: string
