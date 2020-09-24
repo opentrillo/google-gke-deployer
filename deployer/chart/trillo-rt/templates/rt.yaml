@@ -21,7 +21,7 @@ spec:
       serviceAccountName: trillo-rt
       containers:
         - name: trillo-rt
-          image: {{ .Values.rt.image }}
+          image: {{ .Values.rt.image }}:{{ .Values.rt.tag }}
           imagePullPolicy: {{ .Values.rt.pullPolicy }}
           securityContext:
             privileged: true

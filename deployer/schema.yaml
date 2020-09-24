@@ -4,12 +4,29 @@ x-google-marketplace:
   applicationApiVersion: v1beta1
   # The published version is required and MUST match the tag
   # of the deployer image
-  publishedVersion: "$TAG"
+  publishedVersion: "3.11.0"
   publishedVersionMetadata:
     releaseNote: >-
       Major release of Trillo Apps.
-  images: {}
-
+  images: 
+    '':  # Primary image has no name.
+      properties:
+        rt.image.repo:
+          type: REPO_WITH_REGISTRY
+        rt.image.tag:
+          type: TAG
+    trillo-data-service:
+      properties:
+        ds.image.repo:
+          type: REPO_WITH_REGISTRY
+        ds.image.tag:
+          type: TAG
+    trillo-gke-tasker:      
+      properties:
+        pubsub.image.repo:
+          type: REPO_WITH_REGISTRY
+        pubsub.image.tag:
+          type: TAG
 properties:
   name:
     type: string
@@ -45,25 +62,6 @@ properties:
     x-google-marketplace:
       type: STRING
     default: -na-
-  ds.image.repo:
-    type: string
-    description: This is the Trillo Data Service image.
-    default: gcr.io/trillo-k8s-public/trillo-rt/trillo-data-service:3.11
-    x-google-marketplace:
-      type: IMAGE
-  rt.image.repo:
-    type: string
-    description: This is the Trillo Runtime Service image.
-    default: gcr.io/trillo-k8s-public/trillo-rt:3.11
-    x-google-marketplace:
-      type: IMAGE
-  pubsub.image.repo:
-    type: string
-    description: This is the Trillo Runtime Service image.
-    default: gcr.io/trillo-k8s-public/trillo-rt/trillo-gke-tasker:3.11
-    x-google-marketplace:
-      type: IMAGE
-
 required:
 - name
 - namespace

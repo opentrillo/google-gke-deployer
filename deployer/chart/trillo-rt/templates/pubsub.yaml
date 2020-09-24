@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: trillo-pubsub
-          image: {{ .Values.pubsub.image }}
+          image: {{ .Values.pubsub.image }}:{{ .Values.pubsub.tag }}
           imagePullPolicy: {{ .Values.pubsub.pullPolicy }}
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS

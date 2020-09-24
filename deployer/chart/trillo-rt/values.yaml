@@ -19,11 +19,13 @@ nfsMount: /nfsmnt
  
 pubsub:
   image: null
+  tag: null
   replicaCount: 1
   pullPolicy: IfNotPresent
 
 ds:
   image: null
+  tag: null
   replicaCount: 1
   pullPolicy: IfNotPresent
   quartz:
@@ -32,6 +34,7 @@ ds:
 
 rt:
   image: null
+  tag: null
   pullPolicy: IfNotPresent
   replicaCount: 1
   credentials:
