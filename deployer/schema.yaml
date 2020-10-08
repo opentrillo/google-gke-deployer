@@ -62,9 +62,14 @@ properties:
     x-google-marketplace:
       type: STRING
     default: -na-
+  reportingSecret:
+    type: string
+    x-google-marketplace:
+      type: REPORTING_SECRET
 required:
 - name
 - namespace
 - server
 - bucket
 - mysql.address
+- reportingSecret

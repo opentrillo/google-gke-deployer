@@ -17,6 +17,8 @@ namespace: null
 
 nfsMount: /nfsmnt
  
+reportingSecret: null
+
 pubsub:
   image: null
   tag: null
