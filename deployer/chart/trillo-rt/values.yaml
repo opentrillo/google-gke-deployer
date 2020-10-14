@@ -20,14 +20,16 @@ nfsMount: /nfsmnt
 reportingSecret: null
 
 pubsub:
-  image: null
-  tag: null
+  image: 
+    repo: null
+    tag: null
   replicaCount: 1
   pullPolicy: IfNotPresent
 
 ds:
-  image: null
-  tag: null
+  image: 
+    repo: null
+    tag: null
   replicaCount: 1
   pullPolicy: IfNotPresent
   quartz:
@@ -35,8 +37,9 @@ ds:
     clustered: false
 
 rt:
-  image: null
-  tag: null
+  image: 
+    repo: null
+    tag: null
   pullPolicy: IfNotPresent
   replicaCount: 1
   credentials:
