@@ -70,6 +70,12 @@ export MAIL_ENABLED=yes
 #Packaged Application (read-only)
 export TRILLO_PACKAGED_ORG_NAME=cloud
 
+#Machine Types
+#SFTP
+export SFTP_MACHINE_TYPE=n1-standard-2
+export DB_MACHINE_TYPE=db-n1-standard-4
+export GKE_MACHINE_TYPE=n1-standard-4
+
 #####################################
 gcloud config set project $PROJECT_ID
 #####################################

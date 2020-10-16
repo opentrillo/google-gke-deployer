@@ -41,7 +41,7 @@ spec:
             - name: DATA_SERVICE_URL
               value: https://trillo-ds.{{ .Values.namespace }}.svc.cluster.local:443
             - name: TRILLO_USE_REDIS
-              value: 'false'
+              value: 'true'
             - name: REDIS_CREDENTIALS
               valueFrom:
                 secretKeyRef:
@@ -94,6 +94,8 @@ spec:
               value: /etc/ssh-key/trillo-ssh
             - name: MAIL_ENABLED
               value: '{{ .Values.mail.enabled }}'
+            - name: AGENT_LOCAL_PORT
+              value: '6080'
           ports:
             - containerPort: 8020
               name: trillo-rt

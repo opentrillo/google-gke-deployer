@@ -1,3 +1,4 @@
 Installation doc link: 
 
-Clone this repo: git clone https://github.com/opentrillo/google-gke-deployer.git
+https://docs.trillo.io/trillo-applications/trillo-apps-install
+

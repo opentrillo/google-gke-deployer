@@ -78,12 +78,14 @@ spec:
                   name: admin-credentials
                   key: password
             - name: TRILLO_USE_REDIS
-              value: 'false'
+              value: 'true'
             - name: REDIS_CREDENTIALS
               valueFrom:
                 secretKeyRef:
                   name: redis-credentials
                   key: password
+            - name: AGENT_LOCAL_PORT
+              value: '6080'
           ports:
             - containerPort: 8030
               name: trillo-ds

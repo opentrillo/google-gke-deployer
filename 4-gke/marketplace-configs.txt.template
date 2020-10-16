@@ -5,10 +5,8 @@
 ***Please install the application from the GCP marketplace***
 Link: https://console.cloud.google.com/marketplace/details/trillo-k8s-public/trillo-platform
 
-Step-1: Please provide these values to the cluster application, below.
+Step-1: Please provide these values to the marketplace application, below.
 
-Name            = trillo-rt
-Cluster Name    = ${CLUSTER_NAMESPACE}
 Server DNS name = ${APPSERVER_DNS_NAME}
 Bucket Name     = ${BUCKET_NAME}
 CloudSQL server = ${MYSQL_IP_ADDRESS}
