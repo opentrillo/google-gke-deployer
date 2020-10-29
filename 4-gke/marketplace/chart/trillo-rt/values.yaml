@@ -13,7 +13,7 @@ edge:
 mail:
   enabled: true
 
-namespace: null
+namespace: trillo
 
 nfsMount: /nfsmnt
  
@@ -47,4 +47,5 @@ rt:
   quartz:
     enabled: true
     clustered: false
+
 

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+grep -rl "$1" . | xargs sed -i -e "s|$1|$2|g"
