@@ -96,6 +96,8 @@ spec:
               value: '{{ .Values.mail.enabled }}'
             - name: AGENT_LOCAL_PORT
               value: '6080'
+            - name: LOGGING_CONFIG
+              value: /var/rt-logs-config/log4j2.xml
           ports:
             - containerPort: 8020
               name: trillo-rt
@@ -107,6 +109,8 @@ spec:
               readOnly: true
             - name: google-cloud-key
               mountPath: /var/secrets/google
+            - name: rt-logs-config-volume
+              mountPath: /var/rt-logs-config
           livenessProbe:
             initialDelaySeconds: 60
             periodSeconds: 60
@@ -167,6 +171,9 @@ spec:
         - name: google-cloud-key
           secret:
             secretName: trillort-sa-key
+        - name: rt-logs-config-volume
+          configMap:
+            name: rt-logs-config
   selector:
     matchLabels:
       app: trillo-rt
@@ -262,3 +269,55 @@ metadata:
     version: {{ .Chart.Version }}
 spec:
   timeoutSec: 120
+---
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: rt-logs-config
+  namespace: {{ .Values.namespace }}
+data:
+  log4j2.xml: |-
+    <?xml version="1.0" encoding="UTF-8"?>
+
+    <Configuration shutdownHook="disable">
+      <Properties>
+        <Property name="appenderPatternLayout">
+          TRILLO-RT %p \(%file:%line\) %msg%n
+        </Property>
+      </Properties>
+
+      <Appenders>
+        <Console name="Stdout" target="SYSTEM_OUT">
+          <PatternLayout pattern="${appenderPatternLayout}"/>
+        </Console>
+        <RollingRandomAccessFile name="RollingAppender"
+          fileName="logs/trillo.log" filePattern="logs/trillo-%d{yyyyMMdd}.log.gz">
+          <PatternLayout pattern="${appenderPatternLayout}"/>
+          <TimeBasedTriggeringPolicy/>
+          <DefaultRolloverStrategy max="3"/>
+        </RollingRandomAccessFile>
+
+      </Appenders>
+      <Loggers>
+
+        <!-- Application Loggers -->
+        <Logger name="com.collager.trillo" level="INFO"/>
+        <Logger name="com.collager.app" level="INFO"/>
+
+        <!-- 3rdparty Loggers -->
+        <Logger name="org.springframework.core" level="INFO"/>
+        <Logger name="org.springframework.beans" level="INFO"/>
+        <Logger name="org.springframework.context" level="INFO"/>
+        <Logger name="org.springframework.web" level="INFO"/>
+        <Logger name="o.a.c.b.converters" level="INFO"/>
+        <Logger name="org.springframework.web.socket.config.WebSocketMessageBrokerStats" level="WARN"/>
+
+        <!-- Root Logger -->
+        <Root level="INFO">
+          <AppenderRef ref="RollingAppender"/>
+          <AppenderRef ref="Stdout"/>
+        </Root>
+
+      </Loggers>
+    </Configuration>

@@ -6,11 +6,17 @@ metadata:
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
   annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
     marketplace.cloud.google.com/deploy-info: '{"partner_id": "trillo", "product_id": "trillo-platform", "partner_name": "Trillo Inc."}'
 spec:
   descriptor:
     type: Trillo Apps
+<<<<<<< HEAD
     version: '3.11.8'
+=======
+    version: '3.11.7'
+>>>>>>> 3ea1d483df21cd826dec46c1314813bbb1b4c755
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"

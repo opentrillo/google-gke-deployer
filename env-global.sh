@@ -62,6 +62,7 @@ export CLUSTER_NAMESPACE=trillo
 #GKE App
 #------------------------------------
 export TRILLO_APPS_INSTALL_SOURCE=marketplace
+#export TRILLO_APPS_INSTALL_SOURCE=trillo
 #------------------------------------
 
 #Send email notifications (yes/no)
