@@ -1,3 +1,4 @@
+{{- if ne .Values.server "data-test-internal" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -31,13 +32,15 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["gcsfuse", "-o", "rw,allow_other", "--file-mode=0775", "--dir-mode=0775", "--implicit-dirs", "{{ .Values.bucket }}", "/gcs"]
+                command: [ "gcsfuse", "-o", "rw,allow_other", "--file-mode=0775", "--dir-mode=0775", "--implicit-dirs", "{{ .Values.bucket }}", "/gcs" ]
             preStop:
               exec:
-                command: ["fusermount", "-u", "/gcs"]
+                command: [ "fusermount", "-u", "/gcs" ]
           env:
             - name: TRILLO_PACKAGED_ORG_NAME
               value: {{ .Values.trilloPackagedOrgName }}
+            - name: DEFAULT_APP
+              value: {{ .Values.defaultApp }}
             - name: DATA_SERVICE_URL
               value: https://trillo-ds.{{ .Values.namespace }}.svc.cluster.local:443
             - name: TRILLO_USE_REDIS
@@ -77,7 +80,9 @@ spec:
                   name: admin-credentials
                   key: password
             - name: QUARTZ_ENABLED
-              value: 'true'
+              value: '{{ .Values.rt.quartz.enabled }}'
+            - name: QUARTZ_CLUSTERED
+              value: '{{ .Values.rt.quartz.clustered }}'
             - name: SERVER_PUBLIC_URL
               value: https://{{ .Values.server }}
             - name: DT_URL
@@ -86,7 +91,7 @@ spec:
               value: {{ .Values.nfsMount }}/repo
             - name: APPDATA_DIR
               value: /gcs
-            - name:  GCS_FILE_SERVER
+            - name: GCS_FILE_SERVER
               value: {{ .Values.edge.ipaddress }}
             - name: GCS_FILE_SERVER_USER
               value: {{ .Values.edge.username }}
@@ -94,8 +99,12 @@ spec:
               value: /etc/ssh-key/trillo-ssh
             - name: MAIL_ENABLED
               value: '{{ .Values.mail.enabled }}'
+            - name: MAIL_FROM
+              value: 'no-reply@{{ .Values.server }}'
+            {{- if ne .Values.licenseMode "evaluation" }}
             - name: AGENT_LOCAL_PORT
               value: '6080'
+            {{- end }}
             - name: LOGGING_CONFIG
               value: /var/rt-logs-config/log4j2.xml
           ports:
@@ -159,7 +168,7 @@ spec:
           configMap:
             name: agent-config
         - name: ubbagent-state
-          emptyDir: {}
+          emptyDir: { }
         - name: ssh-key-volume
           secret:
             secretName: trillo-ssh-secret
@@ -213,13 +222,13 @@ metadata:
     ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   rules:
-  - host: {{ .Values.server }}
-    http:
-      paths:
-      - path: /*
-        backend:
-          serviceName: trillo-rt
-          servicePort: 8020
+    - host: {{ .Values.server }}
+      http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: trillo-rt
+              servicePort: 8020
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -259,7 +268,7 @@ spec:
   domains:
     - {{ .Values.server }}
 ---
-apiVersion: cloud.google.com/v1
+apiVersion: cloud.google.com/v1beta1
 kind: BackendConfig
 metadata:
   name: rt-bkendconfig
@@ -269,7 +278,6 @@ metadata:
     version: {{ .Chart.Version }}
 spec:
   timeoutSec: 120
----
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -321,3 +329,4 @@ data:
 
       </Loggers>
     </Configuration>
+  {{- end }}

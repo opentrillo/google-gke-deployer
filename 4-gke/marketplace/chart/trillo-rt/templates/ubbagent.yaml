@@ -1,3 +1,4 @@
+{{- if ne .Values.server "data-test-internal" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -30,3 +31,4 @@ data:
         identity: gcp
         serviceName: trillo-platform.mp-trillo-k8s-public.appspot.com
         consumerId: $AGENT_CONSUMER_ID
+{{- end }}

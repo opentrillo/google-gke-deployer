@@ -1,3 +1,4 @@
+{{- if ne .Values.server "data-test-internal" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -31,10 +32,10 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["gcsfuse", "-o", "rw,allow_other", "--file-mode=0775", "--dir-mode=0775", "--implicit-dirs", "{{ .Values.bucket }}", "/gcs"]
+                command: [ "gcsfuse", "-o", "rw,allow_other", "--file-mode=0775", "--dir-mode=0775", "--implicit-dirs", "{{ .Values.bucket }}", "/gcs" ]
             preStop:
               exec:
-                command: ["fusermount", "-u", "/gcs"]
+                command: [ "fusermount", "-u", "/gcs" ]
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
@@ -64,7 +65,7 @@ spec:
               value: {{ .Values.nfsMount }}/repo
             - name: SERVER_PUBLIC_URL
               value: https://{{ .Values.server }}
-            - name:  GCS_FILE_SERVER
+            - name: GCS_FILE_SERVER
               value: {{ .Values.edge.ipaddress }}
             - name: GCS_FILE_SERVER_USER
               value: {{ .Values.edge.username }}
@@ -77,6 +78,10 @@ spec:
                 secretKeyRef:
                   name: admin-credentials
                   key: password
+            - name: QUARTZ_ENABLED
+              value: '{{ .Values.ds.quartz.enabled }}'
+            - name: QUARTZ_CLUSTERED
+              value: '{{ .Values.ds.quartz.clustered }}'
             - name: TRILLO_USE_REDIS
               value: 'true'
             - name: REDIS_CREDENTIALS
@@ -84,8 +89,10 @@ spec:
                 secretKeyRef:
                   name: redis-credentials
                   key: password
+            {{- if ne .Values.licenseMode "evaluation" }}
             - name: AGENT_LOCAL_PORT
               value: '6080'
+            {{- end }}
             - name: LOGGING_CONFIG
               value: /var/ds-logs-config/log4j2.xml
           ports:
@@ -136,7 +143,7 @@ spec:
           configMap:
             name: agent-config
         - name: ubbagent-state
-          emptyDir: {}        
+          emptyDir: { }
         - name: ssh-key-volume
           secret:
             secretName: trillo-ssh-secret
@@ -221,3 +228,4 @@ data:
 
         </Loggers>
     </Configuration>
+  {{- end }}

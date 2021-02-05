@@ -4,11 +4,7 @@ x-google-marketplace:
   applicationApiVersion: v1beta1
   # The published version is required and MUST match the tag
   # of the deployer image
-<<<<<<< HEAD
-  publishedVersion: "3.11.8"
-=======
-  publishedVersion: "3.11.7"
->>>>>>> 3ea1d483df21cd826dec46c1314813bbb1b4c755
+  publishedVersion: "3.11.13"
   publishedVersionMetadata:
     releaseNote: >-
       Major release of Trillo Apps.
@@ -47,21 +43,18 @@ properties:
     type: string
     x-google-marketplace:
       type: STRING
-    default: trillo-rt.svc.cluster.local
   bucket:
     title: Bucket Name 
     description: Bucket name provisioned by the pre-installer
     type: string
     x-google-marketplace:
       type: STRING
-    default: -na-
   mysql.address:
     title: CloudSQL server  
     description: Private IP of the MySQL server provisioned by the pre-installer
     type: string
     x-google-marketplace:
       type: STRING
-    default: -na-
   edge.ipaddress:
     title: SFTP server  
     description: SFTP server is provisioned by the pre-installer. Leave it blank if there is none provisioned.

@@ -22,6 +22,7 @@ export SUBNETWORK=projects/$OTHER_NETWORK_PROJECT/regions/$REGION/subnetworks/$S
 #**** Must Provide Yours AppServer's full DNS NAME *****
 export APPSERVER_NAME=
 #Example: copy from below if you like to use trilloapps.com
+#export AUTO_CREATE_DNS_RECORD=yes
 #export APPSERVER_NAME=appserver-$PROJECT_ID.trilloapps.com
 
 
@@ -67,15 +68,21 @@ export TRILLO_APPS_INSTALL_SOURCE=marketplace
 
 #Send email notifications (yes/no)
 export MAIL_ENABLED=yes
+export FROM_ADDRESS=no-reply@$APPSERVER_NAME
 
 #Packaged Application (read-only)
 export TRILLO_PACKAGED_ORG_NAME=cloud
+export DEFAULT_APP=main
 
 #Machine Types
 #SFTP
 export SFTP_MACHINE_TYPE=n1-standard-2
-export DB_MACHINE_TYPE=db-n1-standard-4
-export GKE_MACHINE_TYPE=n1-standard-4
+export DB_MACHINE_TYPE=db-n1-standard-2
+export GKE_MACHINE_TYPE=n1-standard-2
+
+#Trillo GKE Marketplace license
+#export TRILLO_LICENSE_MODE=evaluation
+export TRILLO_LICENSE_ID=trillo-platform-1-license
 
 #####################################
 gcloud config set project $PROJECT_ID

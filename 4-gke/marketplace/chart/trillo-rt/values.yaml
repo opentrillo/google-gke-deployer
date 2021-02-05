@@ -2,6 +2,7 @@ server: ""
 bucket: ""
 
 trilloPackagedOrgName: cloud
+defaultApp: main
 
 mysql:
   address: ""
@@ -13,10 +14,11 @@ edge:
 mail:
   enabled: true
 
-namespace: trillo
+namespace: ""
 
 nfsMount: /nfsmnt
- 
+
+licenseMode: licensed
 reportingSecret: null
 
 pubsub:

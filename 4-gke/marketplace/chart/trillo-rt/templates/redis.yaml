@@ -1,3 +1,4 @@
+{{- if ne .Values.server "data-test-internal" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -62,3 +63,4 @@ spec:
     - port: 6379
   selector:
     app: trillo-redis
+{{- end }}

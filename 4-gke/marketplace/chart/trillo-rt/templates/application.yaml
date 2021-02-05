@@ -12,11 +12,7 @@ metadata:
 spec:
   descriptor:
     type: Trillo Apps
-<<<<<<< HEAD
-    version: '3.11.8'
-=======
-    version: '3.11.7'
->>>>>>> 3ea1d483df21cd826dec46c1314813bbb1b4c755
+    version: '3.11.13'
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
