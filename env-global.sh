@@ -21,10 +21,7 @@ export SUBNETWORK=projects/$OTHER_NETWORK_PROJECT/regions/$REGION/subnetworks/$S
 #Application server name
 #**** Must Provide Yours AppServer's full DNS NAME *****
 export APPSERVER_NAME=
-#Example: copy from below if you like to use trilloapps.com
-#export AUTO_CREATE_DNS_RECORD=yes
-#export APPSERVER_NAME=appserver-$PROJECT_ID.trilloapps.com
-
+#you must add the A-record once this installer is finished.
 
 #Bucket
 export BUCKET_NAME=trillo-$PROJECT_ID
