@@ -34,6 +34,7 @@ export CREATE_SFTP_EDGE=no
 #2 SFTP
 #export CREATE_SFTP_EDGE=yes
 #export EDGE_IMAGE=trillo-sftp-edge
+#export EDGE_INSTANCE=trillo-gcs-edge-01
 #------------------------------------
 
 #MYSQL settings
