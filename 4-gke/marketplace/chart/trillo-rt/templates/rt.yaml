@@ -86,7 +86,7 @@ spec:
             - name: SERVER_PUBLIC_URL
               value: https://{{ .Values.server }}
             - name: DT_URL
-              value: https://www.trillo.io
+              value: https://design.trillo.io
             - name: REPO_DIR
               value: {{ .Values.nfsMount }}/repo
             - name: APPDATA_DIR
@@ -199,7 +199,7 @@ metadata:
     cloud.google.com/app-protocols: '{"trillo-rt-https":"HTTPS"}'
     cloud.google.com/backend-config: '{"default": "rt-bkendconfig"}'
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: trillo-rt
   ports:
