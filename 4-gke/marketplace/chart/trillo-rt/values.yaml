@@ -47,7 +47,7 @@ rt:
   credentials:
     provider: CRYPTO_SHA512
   quartz:
-    enabled: true
+    enabled: false
     clustered: false
 
 
