@@ -10,7 +10,7 @@ fi
 
 source ../env-global.sh
 
-gcloud iam service-accounts create $SERVICE_ACCOUNT_ID --display-name "Trillo File Manager for GCS"
+gcloud iam service-accounts create $SERVICE_ACCOUNT_ID --display-name "Trillo Platform"
 
 #this role is moved to the specific
 #gcloud projects add-iam-policy-binding $PROJECT_ID --member serviceAccount:$SA_EMAIL --role "roles/storage.objectAdmin"
