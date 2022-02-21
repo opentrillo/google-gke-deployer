@@ -12,7 +12,7 @@ fi
 
 if [ "$APPSERVER_NAME" == "" ]
 then
-  echo "Error: You must provide the provide the full dns name of the application server."
+  echo "Error: You must provide the full dns name of the application server."
   exit 1
 fi
 
