@@ -76,7 +76,7 @@ export DEFAULT_APP=main
 #SFTP
 export SFTP_MACHINE_TYPE=n1-standard-2
 export DB_MACHINE_TYPE=db-n1-standard-2
-export GKE_MACHINE_TYPE=n1-standard-4
+export GKE_MACHINE_TYPE=e2-standard-4
 export GKE_NODES=1 #This can be increased to 2
 
 
