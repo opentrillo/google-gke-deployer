@@ -18,6 +18,6 @@ then
 fi
 
 
-gcloud beta container clusters create ${CLUSTER} --zone ${ZONE} --cluster-version "latest" --machine-type "${GKE_MACHINE_TYPE}" --network "${NETWORK}" --num-nodes "${GKE_NODES}" --enable-autoscaling --min-nodes "${GKE_NODES}" --max-nodes "${GKE_NODES}" --addons HorizontalPodAutoscaling,HttpLoadBalancing --enable-ip-alias --scopes storage-rw --image-type "COS"
+gcloud beta container clusters create ${CLUSTER} --zone ${ZONE} --cluster-version "latest" --machine-type "${GKE_MACHINE_TYPE}" --network "${NETWORK}" --num-nodes "${GKE_NODES}" --enable-autoscaling --min-nodes "${GKE_NODES}" --max-nodes "${GKE_NODES}" --addons HorizontalPodAutoscaling,HttpLoadBalancing --enable-ip-alias --scopes storage-rw --image-type "COS" --no-enable-autoupgrade
 
 touch $COMPLETED
