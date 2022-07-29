@@ -10,7 +10,7 @@ echo "Editing the CORS policy on the bucket $BUCKET_NAME"
 CORS_FILE=/tmp/$BUCKET_NAME.cors.json
 
 if [ "$BUCKET_NAME" == "Unknown" ]; then
-    echo "Bucket Name is not known"
+    echo "Bucket is not known, please provide a bucket name"
     exit 0
 fi
 
