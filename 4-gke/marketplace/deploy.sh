@@ -6,7 +6,7 @@ set -x
 export PROJECT_ID=$(gcloud config get-value project | tr ':' '/')
 export REGISTRY=gcr.io/$PROJECT_ID
 export APP_NAME=trillo-rt
-export TAG=3.11.19
+export TAG=3.11.21
 
 export TEST_PROJECT_ID=smooth-cycling-290323
 export mysqlAddress=10.63.0.3
