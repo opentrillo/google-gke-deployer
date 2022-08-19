@@ -21,6 +21,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID --member serviceAccount:$SA_E
 
 gcloud projects add-iam-policy-binding $PROJECT_ID --member serviceAccount:$SA_EMAIL --role "roles/logging.logWriter"
 
+gcloud projects add-iam-policy-binding $PROJECT_ID --member serviceAccount:$SA_EMAIL --role "roles/secretmanager.secretAccessor"
 
 gcloud iam service-accounts keys create $SERVICE_ACCOUNT_ID.json --iam-account $SA_EMAIL
 
