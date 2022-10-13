@@ -16,18 +16,21 @@ then
   exit 1
 fi
 
-
-
-gcloud services enable compute.googleapis.com
-gcloud services enable cloudapis.googleapis.com
-gcloud services enable pubsub.googleapis.com
-gcloud services enable storage-component.googleapis.com
-gcloud services enable servicemanagement.googleapis.com
-gcloud services enable sql-component.googleapis.com
-gcloud services enable sqladmin.googleapis.com
-gcloud services enable iam.googleapis.com
-gcloud services enable container.googleapis.com
-gcloud services enable cloudresourcemanager.googleapis.com
-gcloud services enable servicenetworking.googleapis.com
+for x in compute.googleapis.com cloudapis.googleapis.com pubsub.googleapis.com storage-component.googleapis.com \
+  servicemanagement.googleapis.com sql-component.googleapis.com sqladmin.googleapis.com iam.googleapis.com \
+  container.googleapis.com cloudresourcemanager.googleapis.com servicenetworking.googleapis.com serviceusage.googleapis.com
+do
+  gcloud services enable $x
+  SERVICE_NAME=$x
+  IS_SERVICE_ENABLED=$(gcloud services list --enabled --format="value(config.name)" --filter="config.name:$SERVICE_NAME")
+  while [ -z "$IS_SERVICE_ENABLED" ]
+  do
+      echo "waiting (for 10s) for the $SERVICE_NAME to come up  ....."
+      sleep 10
+      IS_SERVICE_ENABLED=$(gcloud services list --enabled --format="value(config.name)" --filter="config.name:$SERVICE_NAME")
+  done
+  echo "$IS_SERVICE_ENABLED is enabled"
+  echo ""
+done
 
 touch $COMPLETED

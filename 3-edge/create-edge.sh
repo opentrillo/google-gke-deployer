@@ -26,7 +26,7 @@ then
   exit 0
 fi
 
-gcloud compute --project=${PROJECT_ID} instances create ${EDGE_INSTANCE} --zone=$ZONE --machine-type=${SFTP_MACHINE_TYPE} --subnet=$SUBNETWORK --network-tier=PREMIUM --metadata="startup-script=/opt/trillo/start-edge.sh ${BUCKET_NAME},ssh-keys=sadmin:$TRILLO_SSH_PUB" --maintenance-policy=MIGRATE --service-account=$SA_EMAIL --scopes=https://www.googleapis.com/auth/cloud-platform --image=${EDGE_IMAGE} --image-project=project-trillort --boot-disk-size=100GB --boot-disk-type=pd-standard --boot-disk-device-name=trillo-gcs-edge --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
+gcloud compute --project=${PROJECT_ID} instances create ${EDGE_INSTANCE} --zone=$ZONE --machine-type=${SFTP_MACHINE_TYPE} --subnet=$SUBNETWORK --network-tier=PREMIUM --deletion-protection --metadata="startup-script=/opt/trillo/start-edge.sh ${BUCKET_NAME},ssh-keys=sadmin:$TRILLO_SSH_PUB" --maintenance-policy=MIGRATE --service-account=$SA_EMAIL --scopes=https://www.googleapis.com/auth/cloud-platform --image=${EDGE_IMAGE} --image-project=project-trillort --boot-disk-size=100GB --boot-disk-type=pd-standard --boot-disk-device-name=trillo-gcs-edge --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
 
 export EDGE_PUBLIC_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances list --filter="name=(${EDGE_INSTANCE})")
 

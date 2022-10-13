@@ -45,7 +45,11 @@ export MYSQL_INSTANCE_NAME=trillo-mysql-$PROJECT_ID
 #export CREATE_MYSQL=no
 #export MYSQL_INSTANCE_NAME=provide-name
 #------------------------------------
+#CLOUD NAT
+export CLOUD_NAT_ROUTER=default-cloud-nat-router
+export CLOUD_NAT_ROUTER_CONFIG=default-cloud-nat-config
 
+#------------------------------------
 #GKE Cluster
 #--enable one setting---------------
 export CREATE_CLUSTER=yes
@@ -79,6 +83,7 @@ export DB_MACHINE_TYPE=db-n1-standard-2
 export GKE_MACHINE_TYPE=n2-standard-4
 export GKE_NODES=2
 
+export DEPLOYMENTIP=$(curl ifconfig.me)
 
 #Trillo GKE Marketplace license
 #export TRILLO_LICENSE_MODE=evaluation
