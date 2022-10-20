@@ -21,7 +21,7 @@ then
   gcloud compute addresses create trillo-services-network --global --purpose=VPC_PEERING --prefix-length=16 --network=$NETWORK
   gcloud services vpc-peerings connect --service=servicenetworking.googleapis.com --ranges=trillo-services-network --network=$NETWORK_SHORT
 
-  gcloud beta sql instances create $MYSQL_INSTANCE_NAME --tier=${DB_MACHINE_TYPE} --activation-policy=ALWAYS --zone=$ZONE --no-assign-ip --database-version=MYSQL_5_7 --network=$NETWORK --backup --backup-start-time=03:00  --retained-backups-count=90 --root-password=${ROOT_PASSWORD} --storage-auto-increase
+  gcloud beta sql instances create $MYSQL_INSTANCE_NAME --tier=${DB_MACHINE_TYPE} --activation-policy=ALWAYS --zone=$ZONE --no-assign-ip --database-version=MYSQL_5_7 --network=$NETWORK --backup --retained-backups-count=90 --root-password=${ROOT_PASSWORD} --storage-auto-increase
 fi
 
 gcloud sql users create $MYSQL_USERNAME --instance $MYSQL_INSTANCE_NAME --password $MYSQL_PASSWORD --host=%
