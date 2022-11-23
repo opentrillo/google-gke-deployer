@@ -1,4 +1,5 @@
 Installation doc link: 
 
-https://docs.trillo.io/trillo-applications/trillo-apps-install
+https://trillo.gitbook.io/deploying-trillo-workbench-in-google-cloud
+
 
