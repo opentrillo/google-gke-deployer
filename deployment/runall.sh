@@ -31,6 +31,8 @@ prdoer ./0-install-tools.sh
 prdoer ./1-enable-services.sh
 prdoer ./2-generate-key.sh
 prdoer ./3-create-svc-account.sh
+prdoer ./4a-reserve-ip-dns.sh
+prdoer ./4b-reserve-ui-ip-dns.sh
 prdoer ./5-set-latest-versions.sh
 prdoer ./7-create-docai-processors.sh
 
