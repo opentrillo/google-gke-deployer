@@ -1,0 +1,30 @@
+**********************************************************************************************
+**********************************************************************************************
+**********************************************************************************************
+***GCP Kubernetes marketplace install is enabled***
+***Please install the application from the GCP marketplace***
+Link: https://console.cloud.google.com/marketplace/details/trillo-k8s-public/trillo-platform
+
+Step-1: Please provide these values to the marketplace application, below.
+
+Server DNS name = ${APPSERVER_DNS_NAME}
+Bucket Name     = ${BUCKET_NAME}
+CloudSQL server = ${MYSQL_IP_ADDRESS}
+SFTP server     = ${EDGE_INTERNAL_IP}
+**********************************************************************************************
+**********************************************************************************************
+**********************************************************************************************
+
+Step-2: Also, Please have the following DNS A-record added to the DNS server.
+
+Server Name = ${APPSERVER_DNS_NAME}
+Server IP   = ${APPSERVER_IP}
+
+***********************************************************************************************
+
+Step-3: Once the DNS record is entered and verified (dig) then the app-server will be running at:
+
+Server Address     =  https://${APPSERVER_DNS_NAME}
+Server User        =  ${APPSERVER_DEFAULT_USER}
+Password           =  ${APPSERVER_DEFAULT_PASSWORD}
+

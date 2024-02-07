@@ -1,0 +1,196 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trillo-ds
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: trillo-ds
+    app.kubernetes.io/name: {{ .Release.Name }}
+    version: {{ .Chart.Version }}
+spec:
+  replicas: {{ .Values.ds.replicaCount }}
+  selector:
+    matchLabels:
+      app: trillo-ds
+  template:
+    metadata:
+      name: trillo-ds
+      namespace: {{ .Values.namespace }}
+      labels:
+        app: trillo-ds
+    spec:
+      containers:
+        - name: trillo-ds
+          image: {{ .Values.ds.image.repo }}:{{ .Values.ds.image.tag }}
+          imagePullPolicy: {{ .Values.ds.pullPolicy }}
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+            - name: GCP_BUCKET_NAME
+              value: {{ .Values.bucket }}
+            - name: SERVICE_ENVIRONMENT
+              value: {{ .Values.serviceEnvironment }}
+            - name: GCP_SERVICE_NAME
+              value: _default_
+            - name: DEFAULT_DATA_SERVER_HOST
+              value: {{ .Values.mysql.address }}
+            - name: DEFAULT_DATA_SERVER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: username
+            - name: DEFAULT_DATA_SERVER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: password
+            - name: REPO_DIR
+              value: "{{ .Values.nfsMount }}/repo"
+            - name: SERVER_PUBLIC_URL
+              value: https://{{ .Values.uiserver }}
+            - name: TRILLO_WORKBENCH_UI_URL
+              value: https://{{ .Values.uiserver }}
+            - name: GCS_FILE_SERVER
+              value: {{ .Values.edge.ipaddress }}
+            - name: GCS_FILE_SERVER_USER
+              value: {{ .Values.edge.username }}
+            - name: RSA_PRIVATE_KEY
+              value: /etc/ssh-key/trillo-ssh
+            - name: APPDATA_DIR
+              value: "{{ .Values.nfsMount }}/data"
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: admin-credentials
+                  key: password
+            - name: TOKEN-SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: web-token-secret
+                  key: secret
+            - name: QUARTZ_ENABLED
+              value: '{{ .Values.ds.quartz.enabled }}'
+            - name: QUARTZ_CLUSTERED
+              value: '{{ .Values.ds.quartz.clustered }}'
+            - name: TRILLO_USE_REDIS
+              value: 'true'
+            - name: SERVICE_RUNNING_IN_GCP
+              value: 'true'
+            - name: REDIS_URL
+              value: {{ .Values.redis.url }}
+            - name: REDIS_CREDENTIALS
+              valueFrom:
+                secretKeyRef:
+                  name: redis-credentials
+                  key: password
+            - name: LOGGING_CONFIG
+              value: /var/ds-logs-config/log4j2.xml
+            - name: TRILLO_ENABLE_GCS_SUBSCRIBER
+              value: 'true'
+          ports:
+            - containerPort: 8030
+              name: trillo-ds
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 8Gi
+          volumeMounts:
+            - name: trillo-nfs-volume
+              mountPath: {{ .Values.nfsMount }}
+            - name: ssh-key-volume
+              mountPath: "/etc/ssh-key"
+              readOnly: true
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+            - name: ds-logs-config-volume
+              mountPath: /var/ds-logs-config
+          livenessProbe:
+            initialDelaySeconds: 300
+            tcpSocket:
+              port: 8030
+      volumes:
+        - name: ssh-key-volume
+          secret:
+            secretName: trillo-ssh-secret
+            defaultMode: 256
+        - name: trillo-nfs-volume
+          nfs:
+            server: trillo-nfs.{{ .Values.namespace }}.svc.cluster.local
+            path: /
+        - name: google-cloud-key
+          secret:
+            secretName: trillort-sa-key
+        - name: ds-logs-config-volume
+          configMap:
+            name: ds-logs-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trillo-ds
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    version: {{ .Chart.Version }}
+spec:
+  selector:
+    app: trillo-ds
+  ports:
+    - name: https
+      port: 443
+      targetPort: 8030
+      protocol: TCP
+  type: ClusterIP # Internal
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ds-logs-config
+  namespace: {{ .Values.namespace }}
+data:
+  log4j2.xml: |-
+    <?xml version="1.0" encoding="UTF-8"?>
+
+    <Configuration shutdownHook="disable">
+      <Properties>
+        <Property name="appenderPatternLayout">
+          TRILLO-DS %p \(%file:%line\) %msg%n
+        </Property>
+      </Properties>
+
+      <Appenders>
+        <Console name="Stdout" target="SYSTEM_OUT">
+          <PatternLayout pattern="${appenderPatternLayout}"/>
+        </Console>
+
+        <RollingRandomAccessFile name="RollingAppender"
+          fileName="logs/trillo.log" filePattern="logs/trillo-%d{yyyyMMdd}.log.gz">
+          <PatternLayout pattern="${appenderPatternLayout}"/>
+          <TimeBasedTriggeringPolicy/>
+          <DefaultRolloverStrategy max="3"/>
+        </RollingRandomAccessFile>
+
+      </Appenders>
+      <Loggers>
+
+        <!-- Application Loggers -->
+        <Logger name="com.collager.trillo" level="info"/>
+        <Logger name="com.collager.app" level="INFO"/>
+
+        <!-- 3rdparty Loggers -->
+        <Logger name="org.springframework.core" level="WARN"/>
+        <Logger name="org.springframework.beans" level="WARN"/>
+        <Logger name="org.springframework.context" level="WARN"/>
+        <Logger name="org.springframework.web" level="WARN"/>
+        <Logger name="springfox.documentation" level="WARN"/>
+        <Logger name="o.a.c.b.converters" level="INFO"/>
+        <Logger name="org.springframework.web.socket.config.WebSocketMessageBrokerStats" level="WARN"/>
+
+        <!-- Root Logger -->
+        <Root level="INFO">
+          <AppenderRef ref="RollingAppender"/>
+          <AppenderRef ref="Stdout"/>
+        </Root>
+
+        </Loggers>
+    </Configuration>
