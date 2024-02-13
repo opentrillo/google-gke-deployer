@@ -2,13 +2,12 @@
 
 set -xeou pipefail
 
-# for your workbench, decide the full server name along with domain
-##################################################################
-export WORKBENCH_SERVER_NAME=WORKBENCH_DNS_SERVER_NAME_WITH_DOMAIN
-##################################################################
-
-export APPSERVER_UI_NAME=$WORKBENCH_SERVER_NAME
-export APPSERVER_NAME=api.$WORKBENCH_SERVER_NAME
+# for your Trillo Workbench, provide the full server name along with domain
+# you will be creating two DNS A-records at the end of the installation
+################################################################
+export APPSERVER_NAME=***PROVIDE_DNS_SERVER_NAME_WITH_DOMAIN***
+export APPSERVER_UI_NAME=workbench.$APPSERVER_NAME
+################################################################
 
 export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 export SERVICE_ACCOUNT_ID=trillort-sa
