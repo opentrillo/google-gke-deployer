@@ -24,6 +24,7 @@ if [[ -s "$LICENSE_FILE" ]]; then
   echo "License file is present"
 else
   echo "License file does not exist. Please download from the marketplace and copy it under " $LICENSE_FILE
+  exit 1
 fi
 
 cd ./0-setup/ || exit
