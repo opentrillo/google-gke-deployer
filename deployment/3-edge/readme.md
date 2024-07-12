@@ -1,0 +1,1 @@
+Make sure the image is accessed by all authenticated users
