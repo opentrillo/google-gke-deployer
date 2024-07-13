@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: "1.0"
-description: A Helm chart for Trillo Runtime
-name: trillort
-version: 4.0.0

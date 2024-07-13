@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-# UI server configs
-export APPSERVER_UI_IP=$APPSERVER_UI_IP
-export APPSERVER_UI_DNS_NAME=$APPSERVER_UI_DNS_NAME

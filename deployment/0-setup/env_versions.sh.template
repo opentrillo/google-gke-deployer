@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-#platform versions
-export APP_VERSION_RTDS=$APP_VERSION_RTDS
-export APP_VERSION_PUBSUB=$APP_VERSION_PUBSUB

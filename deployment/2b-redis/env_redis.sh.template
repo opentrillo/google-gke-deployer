@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-# Redis config
-export REDIS_PASSWORD=$REDIS_AUTH
-export REDIS_URL=redis://$REDIS_IP:6379

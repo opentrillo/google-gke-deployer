@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# GKE Misc configs
-export REDIS_PASSWORD=$REDIS_PASSWORD
